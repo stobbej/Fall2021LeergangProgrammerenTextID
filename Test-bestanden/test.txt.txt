@@ -1,0 +1,3 @@
+Dit is een korte zin. Dit is geen korte zin, omdat
+deze zin meer dan 10 woorden en een getal bevat! Dit is
+geen vraag, of wel?
