@@ -5,8 +5,6 @@
 #
 # Naam: Marlies Wanders, Jeroen van Kleef, Jeroen Stobbe
 #
-
-
 class TextModel:
     """A class supporting complex models of text."""
 
@@ -44,21 +42,102 @@ class TextModel:
         """
 
         with open(filename) as file:
-            input       = file.read()
+            # input       =   file.read().replace("\n", " ")            # vervang EndOfLine met een spatie
+            input       =   file.read() 
             self.text   =   input
+        
         return self.text
+
+    def make_sentence_lengths(self):
+        """
+        method:     De methode...blabla
+
+        """
+        pass
+
+    def clean_string(self, s):
+        """
+        method:     De methode...blabla
+        argument:   s, as string
+
+        """
+        pass
+
+    def make_word_lengths(self):
+        """
+        method:     De methode...blabla
+
+        """
+        pass
+
+    def make_words(self):
+        """
+        method:     De methode...blabla
+        """
+        pass
+
+    def make_stems(self):
+        """
+        method:     De methode...blabla
+        """
+        pass
+
+    def JSTopenJST(self):
+        """
+        method:     De methode...blabla
+        """
+        pass
+
+    def normalize_dictionary(self, d):
+        """
+        method:     De methode...blabla
+        argument:   d, as dictionary
+        """
+        pass
+    
+    def smallest_value(self, nd1, nd2):
+        """
+        method:     De methode...blabla
+        argument:   nd1, as dictionary
+        argument:   nd2, as dictionary
+        """
+        pass
+
+    def compare_dictionaries(self, d, nd1, nd2):
+        """
+        method:     De methode...blabla
+        argument:   d, as dictionary
+        argument:   nd1, as dictionary
+        argument:   nd2, as dictionary
+        """
+        pass
+
+    def create_all_dictionaries(self):
+        """
+        method:     De methode...blabla
+        """
+        pass
+
+    def compare_text_with_two_models(self, model1, model2):
+        """
+        method:     De methode...blabla
+        argument:   model1, as object
+        argument:   model2, as object
+        """
+        pass
 
 # Hier kan je dingen testen...
 
 ##################### Initialiseren naar persoonlijke DEV-environment #####################
 # Set path naar de locatie van tekst-bestanden
 path_tekstbestanden = """C:\\Users\\jeroe\\GIT\\LeergangP\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\"""
+tekstbestand        = "test.txt"
 #
 ##################### Initialiseren naar persoonlijke DEV-environment #####################
 
 # Hier kan je dingen testen...
 tm = TextModel()
-tm.read_text_from_file(path_tekstbestanden+"test.txt")
+tm.read_text_from_file(path_tekstbestanden+tekstbestand)
 # Zet hier aanroepen neer die het model vullen met informatie
-print('TextModel:', tm)
-print("inhoud test.text:\n", tm.text)
+print("TextModel:", tm)
+print("inhoud", tekstbestand.upper(), ": ",tm.text)
