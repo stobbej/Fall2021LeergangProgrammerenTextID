@@ -32,12 +32,33 @@ class TextModel:
         s += 'Zinslengtes:\n' + str(self.sentence_lengths) + '\n\n'
         s += 'MIJN EIGENSCHAP:\n' + str(self.my_feature)
         return s
-
+    
     # Voeg hier andere methodes toe.
     # Je hebt in het bijzonder methodes nodig die het model vullen.
 
+    def read_text_from_file(self, filename):
+        """
+        method:     De methode plaatst de inhoud van 'filename' in de variabele 'self.text' as string
+        argument:   filename, as string
+        return:     self.text, as string
+        """
+
+        with open(filename) as file:
+            input       = file.read()
+            self.text   =   input
+        return self.text
+
+# Hier kan je dingen testen...
+
+##################### Initialiseren naar persoonlijke DEV-environment #####################
+# Set path naar de locatie van tekst-bestanden
+path_tekstbestanden = """C:\\Users\\jeroe\\GIT\\LeergangP\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\"""
+#
+##################### Initialiseren naar persoonlijke DEV-environment #####################
 
 # Hier kan je dingen testen...
 tm = TextModel()
+tm.read_text_from_file(path_tekstbestanden+"test.txt")
 # Zet hier aanroepen neer die het model vullen met informatie
 print('TextModel:', tm)
+print("inhoud test.text:\n", tm.text)
