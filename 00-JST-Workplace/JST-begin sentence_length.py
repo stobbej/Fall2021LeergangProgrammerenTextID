@@ -7,6 +7,10 @@
 #
 # Naam: Marlies Wanders, Jeroen van Kleef, Jeroen Stobbe
 #
+
+import nltk
+nltk.download()
+
 class TextModel:
     """A class supporting complex models of text."""
 
@@ -53,12 +57,31 @@ class TextModel:
 
     def make_sentence_lengths(self):
         """
-        method:     De methode...blabla
+        method:     De methode bepaalt de lengte van zinnen en voert een count uit op identieke zinlengte
+        argument:   self
+        return:     sentence_lengths, as dictionary {lengte sentence: count}
 
         """
-        pass
+        
+        list_of_words               = self.text.split()                 # zet alle woorden in een lijst
+        word_count                  = 0                                 # init een teller word_count
+        sentence                    = []                                # init een list sentence
 
-# Hier kan je dingen testen...
+        for new_word in list_of_words:                                  # doorloop de woorden
+            if new_word not in ".?!":                                   # nog steeds in dezelfde zin
+                word_count          +=1                                 # verhoog de teller met een woord 
+            if new_word[-1] in ".?!":                                   # einde zin
+                sentence            += [word_count]                     # voeg zin-lengte toe aan list
+                word_count          = 0                                 # zet teller word_count op nul voor nieuwe zin
+                       
+        for teller in sentence:                                         # doorloop de word_counts
+            if teller in self.sentence_lengths:                         # als word_count reeds in dict
+                self.sentence_lengths[teller] += 1                      # tel 1 op
+            else:                                                       # als word_count niet in dict
+                self.sentence_lengths[teller] = 1                       # start met 1
+
+        return self.sentence_lengths  
+
 
 ##################### Initialiseren naar persoonlijke DEV-environment #####################
 # Set path naar de locatie van tekst-bestanden
@@ -66,20 +89,9 @@ path_tekstbestanden = """C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenText
 tekstbestand        = "test.txt"
 #
 ##################### Initialiseren naar persoonlijke DEV-environment #####################
-
 # Hier kan je dingen testen...
 tm = TextModel()
 tm.read_text_from_file(path_tekstbestanden+tekstbestand)
-# Zet hier aanroepen neer die het model vullen met informatie
-print("TextModel:\n\n", tm)
-print("inhoud", tekstbestand.upper(), ": ",tm.text)
+print(tm.make_sentence_lengths())
 
-#################### Assert ###############################################################
-# 
-test_text = """Dit is een korte zin. Dit is geen korte zin, omdat
-deze zin meer dan 10 woorden en een getal bevat! Dit is
-geen vraag, of wel?
-
-Dat klopt helemaal! :-)"""
-
-assert tm.text == test_text
+assert tm.sentence_lengths == {5: 1, 16: 1, 6: 1, 3: 1}
