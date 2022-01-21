@@ -8,10 +8,6 @@
 # Naam: Marlies Wanders, Jeroen van Kleef, Jeroen Stobbe
 #
 
-from nltk.tokenize import word_tokenize
-
-# nltk.download()
-
 class TextModel:
     """A class supporting complex models of text."""
 
