@@ -8,8 +8,9 @@
 # Naam: Marlies Wanders, Jeroen van Kleef, Jeroen Stobbe
 #
 
-import nltk
-nltk.download()
+from nltk.tokenize import word_tokenize
+
+# nltk.download()
 
 class TextModel:
     """A class supporting complex models of text."""
@@ -81,8 +82,7 @@ class TextModel:
                 self.sentence_lengths[teller] = 1                       # start met 1
 
         return self.sentence_lengths  
-
-
+            
 ##################### Initialiseren naar persoonlijke DEV-environment #####################
 # Set path naar de locatie van tekst-bestanden
 path_tekstbestanden = """C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\"""
