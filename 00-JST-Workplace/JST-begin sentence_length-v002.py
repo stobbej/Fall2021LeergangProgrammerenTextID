@@ -8,6 +8,8 @@
 # Naam: Marlies Wanders, Jeroen van Kleef, Jeroen Stobbe
 #
 
+from typing import OrderedDict
+
 class TextModel:
     """A class supporting complex models of text."""
 
@@ -44,50 +46,61 @@ class TextModel:
         return:     self.text, as string
         """
 
-        with open(filename) as file:
-            # input       =   file.read().replace("\n"", " ")            # vervang EndOfLine met een spatie
+        with open(filename, encoding='utf-8') as file:
+            input       = file.read().replace("\n"," ").rstrip("")              # vervang EndOfLine met een spatie
             # moeten we op termijn de inhoud van een tekstbestand schonen van vreemde technische karakters?
-            input       =   file.read() 
-            self.text   =   input
-        
+            # input       =   file.read() 
+            input       = input.replace("\"", " ")                              # vervang " met een spatie
+            self.text   = input
+            
         return self.text
-
+        
     def make_sentence_lengths(self):
         """
         method:     De methode bepaalt de lengte van zinnen en voert een count uit op identieke zinlengte
         argument:   self
         return:     sentence_lengths, as dictionary {lengte sentence: count}
-
         """
         
-        list_of_words               = self.text.split()                 # zet alle woorden in een lijst
-        word_count                  = 0                                 # init een teller word_count
-        sentence                    = []                                # init een list sentence
+        from nltk.tokenize import sent_tokenize, word_tokenize          # import natural language processing
+        from collections import Counter                                 # import Counter voor tellen
+        
+        end_interpunctie = [".", "!", "?"]                              # definitie van zinseinde
+                                                                        # definitie van overige interpunctie
+        nonend_interpunctie = [";", ":", ",", "-", "&", "-", "(", ")", "{", "}", "[", "]", "<", ">", '"', "'", "....", "...", "..", "`", "”", "“", "''", "``", "--"]
+        lenght_zinnen = []                                              # init dict length_zinnen
 
-        for new_word in list_of_words:                                  # doorloop de woorden
-            if new_word not in ".?!":                                   # nog steeds in dezelfde zin
-                word_count          +=1                                 # verhoog de teller met een woord 
-            if new_word[-1] in ".?!":                                   # einde zin
-                sentence            += [word_count]                     # voeg zin-lengte toe aan list
-                word_count          = 0                                 # zet teller word_count op nul voor nieuwe zin
+        sentences       = sent_tokenize(self.text)                      # knip tekst op in zinnen
+
+        for sentence in sentences:                                      # doorloop alle zinnnen
+            print(sentence)                                             # TEST-STAP
+            word_count  = 0                                             # init woorden teller
+            words       = word_tokenize(sentence)                       # knip zin op in woorden, interpuntie wordt woord
+            print(words)                                                # TEST-STAP
+            for word in words:                                          # doorloop alle woorden
+                if word not in end_interpunctie and word not in nonend_interpunctie:          # als woord niet interpunctie is dan
+                    word_count += 1                                     # verhoog woorden teller met 1
+            print(word_count)                                           # TEST-STAP
+            lenght_zinnen   += [word_count]                             # plaats woorden teller dict
                        
-        for teller in sentence:                                         # doorloop de word_counts
-            if teller in self.sentence_lengths:                         # als word_count reeds in dict
-                self.sentence_lengths[teller] += 1                      # tel 1 op
-            else:                                                       # als word_count niet in dict
-                self.sentence_lengths[teller] = 1                       # start met 1
-
+        self.sentence_lengths = dict(Counter(lenght_zinnen))            # score zinnen met zelfde lengte
+        
         return self.sentence_lengths  
             
 ##################### Initialiseren naar persoonlijke DEV-environment #####################
 # Set path naar de locatie van tekst-bestanden
 path_tekstbestanden = """C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\"""
 tekstbestand        = "test.txt"
+# tekstbestand        = "HP1.txt"
+# tekstbestand        = "HP2.txt"
 #
 ##################### Initialiseren naar persoonlijke DEV-environment #####################
 # Hier kan je dingen testen...
 tm = TextModel()
 tm.read_text_from_file(path_tekstbestanden+tekstbestand)
-print(tm.make_sentence_lengths())
+
+dict = tm.make_sentence_lengths()
+sorted_dict = OrderedDict(sorted(dict.items()))
+print(sorted_dict)
 
 assert tm.sentence_lengths == {5: 1, 16: 1, 6: 1, 3: 1}
