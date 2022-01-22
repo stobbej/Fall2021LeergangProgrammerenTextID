@@ -73,14 +73,14 @@ class TextModel:
         sentences       = sent_tokenize(self.text)                      # knip tekst op in zinnen
 
         for sentence in sentences:                                      # doorloop alle zinnnen
-            print(sentence)                                             # TEST-STAP
+            print("Zin:            ", sentence)                         # TEST-STAP
             word_count  = 0                                             # init woorden teller
             words       = word_tokenize(sentence)                       # knip zin op in woorden, interpuntie wordt woord
-            print(words)                                                # TEST-STAP
+            print("Woorden:        ", words)                            # TEST-STAP
             for word in words:                                          # doorloop alle woorden
                 if word not in end_interpunctie and word not in nonend_interpunctie:          # als woord niet interpunctie is dan
                     word_count += 1                                     # verhoog woorden teller met 1
-            print(word_count)                                           # TEST-STAP
+            print("Woorden teller: ", word_count)                       # TEST-STAP
             lenght_zinnen   += [word_count]                             # plaats woorden teller dict
                        
         self.sentence_lengths = dict(Counter(lenght_zinnen))            # score zinnen met zelfde lengte
