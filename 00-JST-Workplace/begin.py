@@ -5,7 +5,7 @@
 #
 # Opdracht      :   Tekstidentificatie
 #
-#
+
 class TextModel:
     """A class supporting complex models of text."""
 
