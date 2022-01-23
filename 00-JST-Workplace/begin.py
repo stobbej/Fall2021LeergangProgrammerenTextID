@@ -3,10 +3,9 @@
 # date          :   2022-01-21
 # projectgroep  :   Marlies Wanders, Jeroen van Kleef, Jeroen Stobbe
 #
-# Opdracht: Tekstidentificatie
+# Opdracht      :   Tekstidentificatie
 #
 #
-
 class TextModel:
     """A class supporting complex models of text."""
 
@@ -59,18 +58,19 @@ class TextModel:
 
         """
         
-        list_of_words               = self.text.split()                 # zet alle woorden in een lijst
-        # print("Lijst van woorden :", list_of_words)                     # TEST-STAP
         word_count                  = 0                                 # init een teller word_count
         sentence_count              = []                                # init een list sentence_count
         endPunc                     = ".?!" 	                        # init einde zin
+
+        list_of_words               = self.text.split()                 # zet alle woorden in een lijst
+        # print("Lijst van woorden :", list_of_words)                     # TEST-STAP
 
         for new_word in list_of_words:                                  # doorloop de woorden
             if new_word not in endPunc:                                 # nog steeds in dezelfde zin
                 word_count          +=1                                 # verhoog de teller met een woord
                 # print(word_count, new_word)                             # TEST-STAP
             if new_word[-1] in endPunc:                                 # einde zin
-                sentence_count     += [word_count]                      # voeg zin-lengte toe aan list
+                sentence_count      += [word_count]                     # voeg zin-lengte toe aan list
                 # print(sentence_count)                                   # TEST-STAP
                 word_count          = 0                                 # zet teller word_count op nul voor nieuwe zin
                        
