@@ -93,15 +93,15 @@ class TextModel:
         """
         clean_string = ""                                               # init clean string als leeg     
 
-        # print(punctuation)                                              # TEST-STAP
+        print(punctuation)                                              # TEST-STAP
         
         for p in punctuation:                                           # voor elke interpunctie doorloop string
-            # print(p)                                                    # TEST-STAP
+            print(p)                                                    # TEST-STAP
             s = s.replace(p, "")                                        # vervang interpunctie door leeg
-            # print(s)                                                    # TEST-STAP
+            print(s)                                                    # TEST-STAP
         
         clean_string = s.lower()                                        # zet string in lower caps
-        # print(clean_string)                                             # TEST-STAP
+        print(clean_string)                                             # TEST-STAP
             
         return clean_string
             
