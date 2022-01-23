@@ -49,28 +49,45 @@ class TextModel:
         
         return self.text
 
+    def clean_the_mess(self, vervang, hierdoor):
+        """
+        
+        """
+        pass
+
     def make_sentence_lengths(self):
         """
         method: Maakt een dictionary van de zinslengtes in het bestand.
 
         """
 
-        # Replace leestekens die op einde van zin duiden
+        # Replace leestekens die op einde van zin duiden.
+        # We gaan nog kijken naar een cleanere methode om dit te doen, maar voor nu werkt dit.
+        # Let op: er zijn 'onvolkomenheden' in de telling: 
+        # mrs. (telt als zin van 1 woord)
+        # nalopen van de zin met lengte 181
         clean_text_exclamation = self.text.replace("!",".")
         clean_text_question = clean_text_exclamation.replace("?",".")
-        clean_text = clean_text_question.replace("\n", " ")
+        clean_text_dashes = clean_text_question.replace("--","")
+        clean_text_quotes = clean_text_dashes.replace('"',"")
+        clean_text_4dots = clean_text_quotes.replace("....",".")
+        clean_text_3dots = clean_text_4dots.replace("...","")
+        clean_text = clean_text_3dots.replace("\n", " ")
+
+        print(clean_text)
+
         sentences = clean_text.split(".")                                   # Splits de tekst in zinnen (bij punt)
         sentence_length_dict = {}
         sentence = 0                                                        # Initialiseer dictionary en teller
         
-        #print(sentences)
+        print(sentences)
         
         for sentence in sentences:
-            #print(sentence)                      
+            print(sentence)                      
             just_words = sentence.split()
-            #print(just_words)   
+            print(just_words)   
             length = len(just_words)
-            #print(length)
+            print(length)
 
             # Condities voor telling.
             # 0 is niets, dus hou buiten de dictionary (komt voor bij het gebruik van bijvoorbeeld !!)
@@ -79,11 +96,11 @@ class TextModel:
             # Waarde nog niet aanwezig in dict? Voeg dan toe.
             elif length not in sentence_length_dict:
                 sentence_length_dict[length] = 1
-                #print(sentence_length_dict)
+                print(sentence_length_dict)
             # Waarde wel aanwezig in dict? Voeg dan 1 extra toe bovenop wat je al had.
             else:
                 sentence_length_dict[length] += 1
-                #print(sentence_length_dict)
+                print(sentence_length_dict)
 
         # Zet self.sentence_lengths met de dictionary
         self.sentence_lengths=sentence_length_dict
@@ -91,6 +108,6 @@ class TextModel:
 
 #testcode voor uitvoer
 b = TextModel()
-b.read_text_from_file("Tekst-bestanden/train1.txt")
+b.read_text_from_file("""C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\HP1.txt""")
 dict = b.make_sentence_lengths()
 print(b.sentence_lengths)
