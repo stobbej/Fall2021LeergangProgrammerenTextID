@@ -61,12 +61,14 @@ class TextModel:
         """
         
         list_of_words               = self.text.split()                 # zet alle woorden in een lijst
+        print("Lijst van woorden :", list_of_words)                     # TEST-STAP
         word_count                  = 0                                 # init een teller word_count
         sentence                    = []                                # init een list sentence
 
         for new_word in list_of_words:                                  # doorloop de woorden
             if new_word not in ".?!":                                   # nog steeds in dezelfde zin
-                word_count          +=1                                 # verhoog de teller met een woord 
+                word_count          +=1                                 # verhoog de teller met een woord
+                print(word_count, new_word)
             if new_word[-1] in ".?!":                                   # einde zin
                 sentence            += [word_count]                     # voeg zin-lengte toe aan list
                 word_count          = 0                                 # zet teller word_count op nul voor nieuwe zin
@@ -83,6 +85,7 @@ class TextModel:
 # Set path naar de locatie van tekst-bestanden
 path_tekstbestanden = """C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\"""
 tekstbestand        = "test.txt"
+# tekstbestand        = "HP1.txt"
 #
 ##################### Initialiseren naar persoonlijke DEV-environment #####################
 # Hier kan je dingen testen...
