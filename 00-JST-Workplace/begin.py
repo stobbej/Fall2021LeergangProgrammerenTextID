@@ -1,11 +1,10 @@
 # Fall 2021 - Leergang Programmeren TextID
-# file          :   JST-begin/py
+# file          :   begin.py
 # date          :   2022-01-21
-# author        :   StobbeJ
+# projectgroep  :   Marlies Wanders, Jeroen van Kleef, Jeroen Stobbe
 #
 # Opdracht: Tekstidentificatie
 #
-# Naam: Marlies Wanders, Jeroen van Kleef, Jeroen Stobbe
 #
 
 class TextModel:
@@ -45,7 +44,7 @@ class TextModel:
         """
 
         with open(filename) as file:
-            # input       =   file.read().replace("\n"", " ")            # vervang EndOfLine met een spatie
+            # input       =   file.read().replace("\n", " ")            # vervang EndOfLine met een spatie
             # moeten we op termijn de inhoud van een tekstbestand schonen van vreemde technische karakters?
             input       =   file.read() 
             self.text   =   input
@@ -61,9 +60,9 @@ class TextModel:
         """
         
         list_of_words               = self.text.split()                 # zet alle woorden in een lijst
-        print("Lijst van woorden :", list_of_words)                     # TEST-STAP
+        # print("Lijst van woorden :", list_of_words)                     # TEST-STAP
         word_count                  = 0                                 # init een teller word_count
-        sentence_count              = []                                # init een list sentence
+        sentence_count              = []                                # init een list sentence_count
         endPunc                     = ".?!" 	                        # init einde zin
 
         for new_word in list_of_words:                                  # doorloop de woorden
@@ -94,6 +93,7 @@ tekstbestand        = "test.txt"
 # Hier kan je dingen testen...
 tm = TextModel()
 tm.read_text_from_file(path_tekstbestanden+tekstbestand)
-print(tm.make_sentence_lengths())
+dict = tm.make_sentence_lengths()
+print(dict)
 
-assert tm.sentence_lengths == {5: 1, 16: 1, 6: 1, 3: 1}
+assert dict == {5: 1, 16: 1, 6: 1, 3: 1}

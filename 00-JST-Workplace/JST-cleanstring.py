@@ -1,12 +1,14 @@
 # Fall 2021 - Leergang Programmeren TextID
-# file          :   JST-begin/py
+# file          :   begin.py
 # date          :   2022-01-21
-# author        :   StobbeJ
+# projectgroep  :   Marlies Wanders, Jeroen van Kleef, Jeroen Stobbe
 #
 # Opdracht: Tekstidentificatie
 #
-# Naam: Marlies Wanders, Jeroen van Kleef, Jeroen Stobbe
 #
+
+from cgitb import text
+from string import punctuation
 
 class TextModel:
     """A class supporting complex models of text."""
@@ -45,7 +47,7 @@ class TextModel:
         """
 
         with open(filename) as file:
-            # input       =   file.read().replace("\n"", " ")            # vervang EndOfLine met een spatie
+            # input       =   file.read().replace("\n", " ").rstrip()             # vervang EndOfLine met een spatie
             # moeten we op termijn de inhoud van een tekstbestand schonen van vreemde technische karakters?
             input       =   file.read() 
             self.text   =   input
@@ -61,9 +63,9 @@ class TextModel:
         """
         
         list_of_words               = self.text.split()                 # zet alle woorden in een lijst
-        print("Lijst van woorden :", list_of_words)                     # TEST-STAP
+        # print("Lijst van woorden :", list_of_words)                     # TEST-STAP
         word_count                  = 0                                 # init een teller word_count
-        sentence_count              = []                                # init een list sentence
+        sentence_count              = []                                # init een list sentence_count
         endPunc                     = ".?!" 	                        # init einde zin
 
         for new_word in list_of_words:                                  # doorloop de woorden
@@ -81,7 +83,27 @@ class TextModel:
             else:                                                       # als word_count niet in dict
                 self.sentence_lengths[teller] = 1                       # start met 1
 
-        return self.sentence_lengths  
+        return self.sentence_lengths 
+
+    def clean_string(self, s):
+        """
+        Method:     De methode verwijdert interpunctie en zet alle letters in lower-case
+        argument:   self, s = string
+        return:     clean_string, as string
+        """
+        clean_string = ""                                               # init clean string als leeg     
+
+        # print(punctuation)                                              # TEST-STAP
+        
+        for p in punctuation:                                           # voor elke interpunctie doorloop string
+            # print(p)                                                    # TEST-STAP
+            s = s.replace(p, "")                                        # vervang interpunctie door leeg
+            # print(s)                                                    # TEST-STAP
+        
+        clean_string = s.lower()                                        # zet string in lower caps
+        # print(clean_string)                                             # TEST-STAP
+            
+        return clean_string
             
 ##################### Initialiseren naar persoonlijke DEV-environment #####################
 # Set path naar de locatie van tekst-bestanden
@@ -94,6 +116,13 @@ tekstbestand        = "test.txt"
 # Hier kan je dingen testen...
 tm = TextModel()
 tm.read_text_from_file(path_tekstbestanden+tekstbestand)
-print(tm.make_sentence_lengths())
+print("Orginele tekst: \n", tm.text)
 
-assert tm.sentence_lengths == {5: 1, 16: 1, 6: 1, 3: 1}
+clean_text = """dit is een korte zin dit is geen korte zin omdat
+deze zin meer dan 10 woorden en een getal bevat dit is
+geen vraag of wel
+
+dat klopt helemaal"""
+clean_s = tm.clean_string(tm.text)
+print("\nSchone tekst: \n",clean_s)
+assert clean_s == clean_text
