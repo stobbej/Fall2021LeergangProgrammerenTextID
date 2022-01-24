@@ -6,6 +6,7 @@
 # Opdracht      :   Tekstidentificatie
 #
 
+
 class TextModel:
     """A class supporting complex models of text."""
 
@@ -103,20 +104,71 @@ class TextModel:
                 # print(self.sentence_lengths)                                        # TEST-STAP
         
         return self.sentence_lengths
+    
+    def clean_string(self, s):
+        """
+        Method:     De methode verwijdert interpunctie en zet alle letters in lower-case
+        argument:   self, s = string
+        return:     clean_string, as string
+        """
+        from string import punctuation
+        
+        clean_string = ""                                               # init clean string als leeg     
+
+        # print(punctuation)                                              # TEST-STAP
+        
+        for p in punctuation:                                           # voor elke interpunctie doorloop string
+            # print(p)                                                    # TEST-STAP
+            s = s.replace(p, "")                                        # vervang interpunctie door leeg
+            # print(s)                                                    # TEST-STAP
+        
+        clean_string = s.lower()                                        # zet string in lower caps
+        # print(clean_string)                                             # TEST-STAP
             
+        return clean_string    
+    
+    def make_stems(self):
+        """
+        method:     De methode...blabla
+        argument:   
+        retunr:     
+        """
+        
+        clean_text = self.clean_string(self.text)
+        list_of_words = clean_text.split() 
+
+        import snowballstemmer
+        # stemmer = snowballstemmer.stemmer('english');
+        stemmer = snowballstemmer.stemmer('dutch');
+
+        for word in list_of_words:
+            if stemmer.stemWord(word) not in self.stems:
+                self.stems[stemmer.stemWord(word)] = 1
+            else:
+                self.stems[stemmer.stemWord(word)] += 1
+        return self.stems
+                    
 ##################### Initialiseren naar persoonlijke DEV-environment #####################
 # Set path naar de locatie van tekst-bestanden
 path_tekstbestanden = """C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\"""
-tekstbestand        = "test.txt"
-# tekstbestand        = "train1.txt"
+# tekstbestand        = "test.txt"
+tekstbestand        = "train1.txt"
 # tekstbestand        = "HP1.txt"
 #
 ##################### Initialiseren naar persoonlijke DEV-environment #####################
 # Hier kan je dingen testen...
 tm = TextModel()
 tm.read_text_from_file(path_tekstbestanden+tekstbestand)
+
 dict = tm.make_sentence_lengths()
 print(dict)
+# assert dict == {5: 1, 16: 1, 6: 1, 3: 1}                                          # test.txt
+assert dict == {5: 1, 16: 1, 6: 1}                                                  # train1.txt
 
-assert dict == {5: 1, 16: 1, 6: 1, 3: 1}                                          # test.txt
-# assert dict == {5: 1, 16: 1, 6: 1}                                                  # train1.txt
+dict_stems = tm.make_stems()
+print(dict_stems)
+assert dict_stems == {
+  'dit': 3, 'is': 3, 'een': 2, 'kort': 2, 'zin': 3, 'gen': 2,
+  'omdat': 1, 'dez': 1, 'mer': 1, 'dan': 1, '10': 1, 'woord': 1,
+  'en': 1, 'getal': 1, 'bevat': 1, 'vrag': 1, 'of': 1, 'wel': 1
+}
