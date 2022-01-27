@@ -6,6 +6,8 @@
 # Opdracht      :   Tekstidentificatie
 #
 
+import copy
+
 class TextModel:
     """A class supporting complex models of text."""
 
@@ -50,7 +52,7 @@ class TextModel:
         
         return self.text
 
-    def clean_the_mess(self, vervang, hierdoor):
+    def clean_the_mess2(self, vervang, hierdoor):
         """
         method:
         argument:
@@ -103,10 +105,46 @@ class TextModel:
                 # print(self.sentence_lengths)                                        # TEST-STAP
         
         return self.sentence_lengths
+ 
+
+    def make_words(self):
+        """
+        Method: Makes a dictionary of the read text file
+        Argument: self
+        Return: 
+        """
+        gettext = copy.deepcopy(self.text)
+        gettext = gettext.lower()
+        replace_chars = ["\"", ".", ",", "\'", "....", "...", "--", "?", "!"]            
+        with_this = ""
+        for replace in range(len(replace_chars)):
+            gettext = gettext.replace(replace_chars[replace], with_this)
+
+        replace_chars = ["\n"]            
+        with_this = " "            
+        for replace in range(len(replace_chars)):
+            gettext = gettext.replace(replace_chars[replace], with_this) 
+
+        sourcematerial = gettext.split()
+
+        for word in sourcematerial:
+            if word == "":
+                #print(word)
+                continue
+            elif word not in self.words:
+                #print(word)
+                self.words[word] = 1
+            else:
+                #print(word)
+                self.words[word] += 1
             
+        return
+
+
+
 ##################### Initialiseren naar persoonlijke DEV-environment #####################
 # Set path naar de locatie van tekst-bestanden
-path_tekstbestanden = """C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\"""
+path_tekstbestanden = ""
 tekstbestand        = "test.txt"
 # tekstbestand        = "train1.txt"
 # tekstbestand        = "HP1.txt"
@@ -115,8 +153,14 @@ tekstbestand        = "test.txt"
 # Hier kan je dingen testen...
 tm = TextModel()
 tm.read_text_from_file(path_tekstbestanden+tekstbestand)
-dict = tm.make_sentence_lengths()
-print(dict)
+tm.make_words()
+print(tm.words)
 
-assert dict == {5: 1, 16: 1, 6: 1, 3: 1}                                          # test.txt
+assert tm.words == {
+  'dit': 3, 'is': 3, 'een': 2, 'korte': 2, 'zin': 3, 'geen': 2,
+  'omdat': 1, 'deze': 1, 'meer': 1, 'dan': 1, '10': 1, 'woorden': 1,
+  'en': 1, 'getal': 1, 'bevat': 1, 'vraag': 1, 'of': 1, 'wel': 1
+}
+
+#assert dict == {5: 1, 16: 1, 6: 1, 3: 1}                                          # test.txt
 # assert dict == {5: 1, 16: 1, 6: 1}                                                  # train1.txt
