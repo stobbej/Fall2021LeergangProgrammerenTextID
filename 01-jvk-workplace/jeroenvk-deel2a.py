@@ -8,6 +8,17 @@
 
 import copy
 
+def clean_the_mess(text, replace_chars, with_this):
+        """
+        method: Replaces items in the source text to clean up strings.
+        argument: text: string - source material, replace: list of characters to be replaced, with_this: list of characters to substitute with 'replace'.
+        return: cleaned string.
+        """
+        for replace in range(len(replace_chars)):
+            text = text.replace(replace_chars[replace], with_this) 
+
+        return text
+
 class TextModel:
     """A class supporting complex models of text."""
 
@@ -52,13 +63,7 @@ class TextModel:
         
         return self.text
 
-    def clean_the_mess(self, vervang, hierdoor):
-        """
-        method:
-        argument:
-        return:
-        """
-        pass
+
 
     def make_sentence_lengths(self):
         """
@@ -72,17 +77,30 @@ class TextModel:
         # Let op: er zijn 'onvolkomenheden' in de telling: 
         # mrs. (telt als zin van 1 woord)
         # nalopen van de zin met lengte 181
-        clean_text_exclamation = self.text.replace("!",".")                         # zet ! om naar zinseinde .
-        clean_text_question = clean_text_exclamation.replace("?",".")               # zet ? om naar zinseinde .
-        clean_text_dashes = clean_text_question.replace("--","")                    # verwijder --
-        clean_text_quotes = clean_text_dashes.replace('"',"")                       # verwijder "
-        clean_text_4dots = clean_text_quotes.replace("....",".")                    # zet .... om naar zinseinde .
-        clean_text_3dots = clean_text_4dots.replace("...","")                       # verwijder ...
-        clean_text = clean_text_3dots.replace("\n", " ")                            # verwijder End of Line
+        #clean_text_exclamation = self.text.replace("!",".")                         # zet ! om naar zinseinde .
+        #clean_text_question = clean_text_exclamation.replace("?",".")               # zet ? om naar zinseinde .
+        #clean_text_dashes = clean_text_question.replace("--","")                    # verwijder --
+        #clean_text_quotes = clean_text_dashes.replace('"',"")                       # verwijder "
+        #clean_text_4dots = clean_text_quotes.replace("....",".")                    # zet .... om naar zinseinde .
+        #clean_text_3dots = clean_text_4dots.replace("...","")                       # verwijder ...
+        #clean_text = clean_text_3dots.replace("\n", " ")                            # verwijder End of Line
 
+        gettext = copy.deepcopy(self.text)
+        gettext = gettext.lower()
+        replace_chars = ["....", "...", "--"]            
+        with_this = ""
+        gettext = clean_the_mess(gettext, replace_chars, with_this)
+
+        replace_chars = [",", "!", "?"]            
+        with_this = "."            
+        gettext = clean_the_mess(gettext, replace_chars, with_this) 
+
+        replace_chars = ["\n"]            
+        with_this = " "            
+        gettext = clean_the_mess(gettext, replace_chars, with_this) 
         # print(clean_text)                                                           # TEST-STAP
 
-        sentences = clean_text.split(".")                                           # splits de tekst in zinnen (bij punt)
+        sentences = gettext.split(".")                                           # splits de tekst in zinnen (bij punt)
         self.sentence_lengths = {}                                                  # init dictionary
         sentence = 0                                                                # init teller
         
@@ -119,13 +137,11 @@ class TextModel:
         gettext = gettext.lower()
         replace_chars = ["\"", ".", ",", "\'", "....", "...", "--", "?", "!"]            
         with_this = ""
-        for replace in range(len(replace_chars)):
-            gettext = gettext.replace(replace_chars[replace], with_this)
+        gettext = clean_the_mess(gettext, replace_chars, with_this)
 
         replace_chars = ["\n"]            
         with_this = " "            
-        for replace in range(len(replace_chars)):
-            gettext = gettext.replace(replace_chars[replace], with_this) 
+        gettext = clean_the_mess(gettext, replace_chars, with_this) 
 
         # Deel 2: Splits het in woorden op en tel woord voor woord wat het aantal is. Schrijf die weg naar self.words.
         sourcematerial = gettext.split()
@@ -154,14 +170,12 @@ class TextModel:
         gettext = copy.deepcopy(self.text)
         gettext = gettext.lower()
         replace_chars = ["\"", ".", ",", "\'", "....", "...", "--", "?", "!"]            
-        with_this = ""
-        for replace in range(len(replace_chars)):
-            gettext = gettext.replace(replace_chars[replace], with_this)
+        with_this = ""        
+        gettext = clean_the_mess(gettext, replace_chars, with_this)
 
         replace_chars = ["\n"]            
         with_this = " "            
-        for replace in range(len(replace_chars)):
-            gettext = gettext.replace(replace_chars[replace], with_this) 
+        gettext = clean_the_mess(gettext, replace_chars, with_this)
 
         # Deel 2: Splits het in woorden op en tel woord voor woord wat het aantal is. Schrijf die weg naar self.word_lengths.
         sourcematerial = gettext.split()
@@ -169,13 +183,13 @@ class TextModel:
         for word in sourcematerial:
             length = len(word)
             if length == 0:
-                print("0",word)
+                #print("0",word)
                 continue
             elif length not in self.word_lengths:
-                print("uit", word)
+                #print("uit", word)
                 self.word_lengths[length] = 1
             else:
-                print("in", word)
+                #print("in", word)
                 self.word_lengths[length] += 1            
         return
 
@@ -193,8 +207,11 @@ tekstbestand        = "test.txt"
 tm = TextModel()
 tm.read_text_from_file(path_tekstbestanden+tekstbestand)
 tm.make_words()
+tm.make_sentence_lengths()
+print(tm.sentence_lengths)
+
 tm.make_word_lengths()
-print(tm.word_lengths)
+#print(tm.word_lengths)
 
 assert tm.words == {
   'dit': 3, 'is': 3, 'een': 2, 'korte': 2, 'zin': 3, 'geen': 2,
