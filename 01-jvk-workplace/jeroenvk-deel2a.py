@@ -28,6 +28,10 @@ class TextModel:
         # Maak dictionary's voor elke eigenschap
         #
         self.words = {}             # Om woorden te tellen
+        self.modals = {}            # Om modals te tellen -> de dict van modals met counts
+        self.modals_diversity = {}  # Om modals te tellen -> verschillende modals
+        self.modals_count = {}      # Om modals te tellen -> full count
+        self.woordenschat = {}      # Om woordenschat te tellen
         self.word_lengths = {}      # Om woordlengtes te tellen
         self.stems = {}             # Om stammen te tellen
         self.sentence_lengths = {}  # Om zinslengtes te tellen
@@ -39,6 +43,10 @@ class TextModel:
     def __repr__(self):
         """Display the contents of a TextModel."""
         s = 'Woorden:\n' + str(self.words) + '\n\n'
+        s = 'Woordschat:\n' + str(self.woordenschat) + '\n\n'
+        s = 'Hulpwerkwoorden:\n' + str(self.modals) + '\n\n'
+        s = 'Aantal verschillende hulpwerkwoorden:\n' + str(self.modals_diversity) + '\n\n'
+        s = 'Totaal aantal hulpwerkwoorden:\n' + str(self.modals_count) + '\n\n'
         s += 'Woordlengtes:\n' + str(self.word_lengths) + '\n\n'
         s += 'Stammen:\n' + str(self.stems) + '\n\n'
         s += 'Zinslengtes:\n' + str(self.sentence_lengths) + '\n\n'
@@ -155,9 +163,56 @@ class TextModel:
                 self.words[word] = 1
             else:
                 #print(word)
-                self.words[word] += 1            
+                self.words[word] += 1
+        
+        # De woordenschat kan ook direct worden toegevoegd.
+        self.woordenschat = len(self.words)         
         return
 
+    def detect_modals(self):
+        """
+        Method: Detect commonly used modals in text.
+        Argument: self.
+        Return: number of modals used in the source material (int) and a dict of the modals itself.
+        """
+        # Deel 1: maak deep copy zodat origineel behouden blijft.
+        # Zet daarna alles op lower case, vervang leestekens en vervang enters.
+        gettext = copy.deepcopy(self.text)
+        gettext = gettext.lower()
+        replace_chars = ["\"", ".", ",", "\'", "....", "...", "--", "?", "!"]            
+        with_this = ""
+        gettext = clean_the_mess(gettext, replace_chars, with_this)
+
+        replace_chars = ["\n"]            
+        with_this = " "            
+        gettext = clean_the_mess(gettext, replace_chars, with_this) 
+
+        # Deel 2: Splits het in woorden op en tel woord voor woord wat het aantal is. Schrijf die weg naar self.words.
+        sourcematerial = gettext.split()
+
+        # Modals / Hulpwerkwoorden
+        modals = ["can", "may", "might", "could", "should", "would", "will", "must"]
+
+        for word in sourcematerial:
+            if word == "":
+                #print(word)
+                continue
+            if word in modals:                 
+                if word not in self.modals:
+                    #print(word)
+                    self.modals[word] = 1
+                else:
+                    #print(word)
+                    self.modals[word] += 1
+        
+        # De woordenschat kan ook direct worden toegevoegd.
+        self.modals_diversity = len(self.modals)
+        
+        
+        
+        self.modals_count = sum(self.modals.values())
+        
+        return
 
     def make_word_lengths(self):
         """
@@ -206,19 +261,21 @@ tekstbestand        = "test.txt"
 # Hier kan je dingen testen...
 tm = TextModel()
 tm.read_text_from_file(path_tekstbestanden+tekstbestand)
+
 tm.make_words()
-print(tm.words)
+print("woorden: ", tm.words)
+print("woordenscha: ", tm.woordenschat)
+
 tm.make_sentence_lengths()
-print(tm.sentence_lengths)
+print("Zinslengte: ", tm.sentence_lengths)
 
 tm.make_word_lengths()
-print(tm.word_lengths)
+print("Woordlengte: ", tm.word_lengths)
 
-assert tm.words == {
-  'dit': 3, 'is': 3, 'een': 2, 'korte': 2, 'zin': 3, 'geen': 2,
-  'omdat': 1, 'deze': 1, 'meer': 1, 'dan': 1, '10': 1, 'woorden': 1,
-  'en': 1, 'getal': 1, 'bevat': 1, 'vraag': 1, 'of': 1, 'wel': 1
-}
+tm.detect_modals()
+print("Hulpwerkwoorden: ", tm.modals)
+print("Diversiteit aan hulpwerkwoorden: ", tm.modals_diversity)
+print("Totaal aantal hulpwerkwoorden: ", tm.modals_count)
 
 #assert dict == {5: 1, 16: 1, 6: 1, 3: 1}                                          # test.txt
 # assert dict == {5: 1, 16: 1, 6: 1}                                                  # train1.txt
