@@ -110,9 +110,11 @@ class TextModel:
     def make_words(self):
         """
         Method: Makes a dictionary of the read text file
-        Argument: self
-        Return: 
+        Argument: self.
+        Return: dictionary in self.words.
         """
+        # Deel 1: maak deep copy zodat origineel behouden blijft.
+        # Zet daarna alles op lower case, vervang leestekens en vervang enters.
         gettext = copy.deepcopy(self.text)
         gettext = gettext.lower()
         replace_chars = ["\"", ".", ",", "\'", "....", "...", "--", "?", "!"]            
@@ -125,6 +127,7 @@ class TextModel:
         for replace in range(len(replace_chars)):
             gettext = gettext.replace(replace_chars[replace], with_this) 
 
+        # Deel 2: Splits het in woorden op en tel woord voor woord wat het aantal is. Schrijf die weg naar self.words.
         sourcematerial = gettext.split()
 
         for word in sourcematerial:
@@ -136,8 +139,7 @@ class TextModel:
                 self.words[word] = 1
             else:
                 #print(word)
-                self.words[word] += 1
-            
+                self.words[word] += 1            
         return
 
 
