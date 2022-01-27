@@ -52,7 +52,7 @@ class TextModel:
         
         return self.text
 
-    def clean_the_mess2(self, vervang, hierdoor):
+    def clean_the_mess(self, vervang, hierdoor):
         """
         method:
         argument:
@@ -109,7 +109,7 @@ class TextModel:
 
     def make_words(self):
         """
-        Method: Makes a dictionary of the read text file
+        Method: Makes a dictionary of the read text file that contains all words and their count.
         Argument: self.
         Return: dictionary in self.words.
         """
@@ -143,6 +143,43 @@ class TextModel:
         return
 
 
+    def make_word_lengths(self):
+        """
+        Method: Makes a dictionary of the read text file that contains all word lengths and their counts.
+        Argument: self.
+        Return: dictionary in self.word_lengths.
+        """
+        # Deel 1: maak deep copy zodat origineel behouden blijft.
+        # Zet daarna alles op lower case, vervang leestekens en vervang enters.
+        gettext = copy.deepcopy(self.text)
+        gettext = gettext.lower()
+        replace_chars = ["\"", ".", ",", "\'", "....", "...", "--", "?", "!"]            
+        with_this = ""
+        for replace in range(len(replace_chars)):
+            gettext = gettext.replace(replace_chars[replace], with_this)
+
+        replace_chars = ["\n"]            
+        with_this = " "            
+        for replace in range(len(replace_chars)):
+            gettext = gettext.replace(replace_chars[replace], with_this) 
+
+        # Deel 2: Splits het in woorden op en tel woord voor woord wat het aantal is. Schrijf die weg naar self.word_lengths.
+        sourcematerial = gettext.split()
+
+        for word in sourcematerial:
+            length = len(word)
+            if length == 0:
+                print("0",word)
+                continue
+            elif length not in self.word_lengths:
+                print("uit", word)
+                self.word_lengths[length] = 1
+            else:
+                print("in", word)
+                self.word_lengths[length] += 1            
+        return
+
+
 
 ##################### Initialiseren naar persoonlijke DEV-environment #####################
 # Set path naar de locatie van tekst-bestanden
@@ -156,7 +193,8 @@ tekstbestand        = "test.txt"
 tm = TextModel()
 tm.read_text_from_file(path_tekstbestanden+tekstbestand)
 tm.make_words()
-print(tm.words)
+tm.make_word_lengths()
+print(tm.word_lengths)
 
 assert tm.words == {
   'dit': 3, 'is': 3, 'een': 2, 'korte': 2, 'zin': 3, 'geen': 2,
