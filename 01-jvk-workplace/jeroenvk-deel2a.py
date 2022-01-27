@@ -187,7 +187,7 @@ class TextModel:
         with_this = " "            
         gettext = clean_the_mess(gettext, replace_chars, with_this) 
 
-        # Deel 2: Splits het in woorden op en tel woord voor woord wat het aantal is. Schrijf die weg naar self.words.
+        # Deel 2: Splits het in woorden op en tel woord voor woord wat het aantal is. Schrijf die weg naar self.modals.
         sourcematerial = gettext.split()
 
         # Modals / Hulpwerkwoorden
@@ -205,10 +205,8 @@ class TextModel:
                     #print(word)
                     self.modals[word] += 1
         
-        # De woordenschat kan ook direct worden toegevoegd.
-        self.modals_diversity = len(self.modals)
-        
-        
+        # De modalstatistieken kan ook direct worden toegevoegd.
+        self.modals_diversity = len(self.modals) 
         
         self.modals_count = sum(self.modals.values())
         
