@@ -207,11 +207,12 @@ tekstbestand        = "test.txt"
 tm = TextModel()
 tm.read_text_from_file(path_tekstbestanden+tekstbestand)
 tm.make_words()
+print(tm.words)
 tm.make_sentence_lengths()
 print(tm.sentence_lengths)
 
 tm.make_word_lengths()
-#print(tm.word_lengths)
+print(tm.word_lengths)
 
 assert tm.words == {
   'dit': 3, 'is': 3, 'een': 2, 'korte': 2, 'zin': 3, 'geen': 2,
