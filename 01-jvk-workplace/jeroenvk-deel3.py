@@ -203,11 +203,16 @@ class TextModel:
         return: nieuwe dict met genormaliseerde waarde.
         """
         results = {}
-        values = d.values()
+        
+        #Eerste deel: haal de waardes uit de dictionary.
+        #Tel die waardes bij elkaar op om de som te krijgen van de waardes.
+        values = d.values()       
         #print("values",values)
         sumofvalues = sum(values)
         #print("sum of values", sumofvalues)
 
+        #Deel twee: Loop door alle sleutels in d heen, haal daar de waarde uit en deel die door de som van alle waarden.
+        #Zet vervolgens de uitkomst als nieuwe genormaliseerde waarde in de dictionary results.
         for k in d:
             #print("waarde", k)
             start = d[k]
