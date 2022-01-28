@@ -95,11 +95,11 @@ class TextModel:
 
         gettext = copy.deepcopy(self.text)
         gettext = gettext.lower()
-        replace_chars = ["....", "...", "--"]            
+        replace_chars = ["...", "--"]            
         with_this = ""
         gettext = clean_the_mess(gettext, replace_chars, with_this)
 
-        replace_chars = [",", "!", "?"]            
+        replace_chars = ["....", ",", "!", "?"]            
         with_this = "."            
         gettext = clean_the_mess(gettext, replace_chars, with_this) 
 
