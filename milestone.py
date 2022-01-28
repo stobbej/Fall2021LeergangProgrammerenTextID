@@ -186,7 +186,7 @@ class TextModel:
 
         import snowballstemmer
         # stemmer = snowballstemmer.stemmer('english');
-        stemmer = snowballstemmer.stemmer('dutch');
+        stemmer = snowballstemmer.stemmer('dutch')
 
         for word in list_of_words:
             if stemmer.stemWord(word) not in self.stems:
@@ -200,7 +200,7 @@ class TextModel:
 
 ##################### Initialiseren naar persoonlijke DEV-environment #####################
 # Set path naar de locatie van tekst-bestanden
-path_tekstbestanden = """C:\\Users\\jeroe\\GIT\\LeergangP\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\"""
+path_tekstbestanden = """C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\"""
 tekstbestand        = "test.txt"
 #
 ##################### Initialiseren naar persoonlijke DEV-environment #####################
@@ -211,3 +211,7 @@ tm.read_text_from_file(path_tekstbestanden+tekstbestand)
 # Zet hier aanroepen neer die het model vullen met informatie
 print("TextModel:", tm)
 print("inhoud", tekstbestand.upper(), ": ",tm.text)
+tm.make_sentence_lengths()
+tm.make_words()
+tm.make_word_lengths()
+tm.make_stems()
