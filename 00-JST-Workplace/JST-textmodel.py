@@ -18,6 +18,8 @@ def clean_the_mess(text, replace_chars, with_this):
         for replace in range(len(replace_chars)):
             text = text.replace(replace_chars[replace], with_this) 
 
+        print(text)
+        
         return text
 
 class TextModel:
@@ -77,15 +79,14 @@ class TextModel:
         with_this = ""
         gettext = clean_the_mess(gettext, replace_chars, with_this)
 
-        replace_chars = ["....", ",", "!", "?"]            
+        replace_chars = ["....", "!", "?"]            
         with_this = "."            
         gettext = clean_the_mess(gettext, replace_chars, with_this) 
 
         replace_chars = ["\n"]            
         with_this = " "            
         gettext = clean_the_mess(gettext, replace_chars, with_this) 
-        # print(clean_text)                                                           # TEST-STAP
-
+      
         sentences = gettext.split(".")                                           # splits de tekst in zinnen (bij punt)
         self.sentence_lengths = {}                                                  # init dictionary
         sentence = 0                                                                # init teller
@@ -357,10 +358,7 @@ class TextModel:
         else:
             print("+++++ Model 2 komt beter overeen ! +++++")
 
-         
 
-
-    
     
     
 # Hier kan je dingen testen...
@@ -383,7 +381,6 @@ tm2 = TextModel()
 tm2.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\train2.txt')
 tm2.create_all_dictionaries()  # deze is hierboven gegeven
 print(tm2)
-
 
 print(' +++++++++++ Onbekende tekst +++++++++++ ')
 tm_unknown = TextModel()
