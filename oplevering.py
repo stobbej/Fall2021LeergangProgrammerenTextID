@@ -45,7 +45,7 @@ class TextModel:
         s += 'Stammen:\n' + str(self.stems) + '\n\n'
         s += 'Zinslengtes:\n' + str(self.sentence_lengths) + '\n\n'
         s += 'Leestekens:\n' + str(self.punctuation) + '\n\n'
-     
+        s += 'MIJN EIGENSCHAP:\n' + str(self.my_feature)
         return s
     
     # Voeg hier andere methodes toe.
@@ -359,23 +359,23 @@ class TextModel:
 
 print(' +++++++++++ Model 1 +++++++++++ ')
 tm1 = TextModel()
-tm1.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\train1.txt')
-# tm1.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\HP1.txt')
+# tm1.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\train1.txt')
+tm1.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\HP1.txt')
 tm1.create_all_dictionaries()  # deze is hierboven gegeven
 print(tm1)
 
 print(' +++++++++++ Model 2 +++++++++++ ')
 tm2 = TextModel()
-tm2.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\train2.txt')
-# tm2.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\Holmes.txt')
+# tm2.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\train2.txt')
+tm2.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\Holmes.txt')
 # tm2.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\HP2.txt')
 tm2.create_all_dictionaries()  # deze is hierboven gegeven
 print(tm2)
 
 print(' +++++++++++ Onbekende tekst +++++++++++ ')
 tm_unknown = TextModel()
-tm_unknown.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\unknown.txt')
-# tm_unknown.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\HP3.txt')
+# tm_unknown.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\unknown.txt')
+tm_unknown.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\HP3.txt')
 tm_unknown.create_all_dictionaries()  # deze is hierboven gegeven
 print(tm_unknown)
 
