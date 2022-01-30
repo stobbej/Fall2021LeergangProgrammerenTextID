@@ -357,17 +357,6 @@ class TextModel:
             print("+++++ Model 2 komt beter overeen ! +++++")
 
 
-    
-    
-# Hier kan je dingen testen...
-
-##################### Initialiseren naar persoonlijke DEV-environment #####################
-# Set path naar de locatie van tekst-bestanden
-path_tekstbestanden = """C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\"""
-tekstbestand        = "test.txt"
-#
-##################### Initialiseren naar persoonlijke DEV-environment #####################
-
 print(' +++++++++++ Model 1 +++++++++++ ')
 tm1 = TextModel()
 tm1.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\train1.txt')
