@@ -372,37 +372,6 @@ tekstbestand        = "test.txt"
 #
 ##################### Initialiseren naar persoonlijke DEV-environment #####################
 
-# Hier kan je dingen testen...
-# tm = TextModel()
-# tm.read_text_from_file(path_tekstbestanden+tekstbestand)
-# # Zet hier aanroepen neer die het model vullen met informatie
-# print("TextModel:", tm)
-# print("inhoud", tekstbestand.upper(), ": ",tm.text)
-# tm.make_sentence_lengths()
-# tm.make_words()
-# tm.make_word_lengths()
-# tm.make_stems()
-# print(tm)
-
-# zet de tekst tussen de triple quotes in een bestand genaamd test.txt
-# test_text = """Dit is een korte zin. Dit is geen korte zin, omdat
-# deze zin meer dan 10 woorden en een getal bevat! Dit is
-# geen vraag, of wel?"""
-
-# tm = TextModel()
-# tm.read_text_from_file(path_tekstbestanden+tekstbestand)
-# assert tm.text == test_text
-
-# # maak alle dictionary's
-# tm.make_sentence_lengths()
-# tm.make_word_lengths()
-# tm.make_words()
-# tm.make_stems()
-# tm.make_punctuation()
-
-# # alle dictionary's bekijken!
-# print('Het model bevat deze dictionary\'s:')
-# print(tm)
 print(' +++++++++++ Model 1 +++++++++++ ')
 tm1 = TextModel()
 tm1.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\train1.txt')
