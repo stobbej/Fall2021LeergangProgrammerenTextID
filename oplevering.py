@@ -8,6 +8,7 @@
 import copy
 from string import punctuation
 from math import log2
+from time import sleep
 
 def clean_the_mess(text, replace_chars, with_this):
         """
@@ -45,7 +46,7 @@ class TextModel:
         s += 'Stammen:\n' + str(self.stems) + '\n\n'
         s += 'Zinslengtes:\n' + str(self.sentence_lengths) + '\n\n'
         s += 'Leestekens:\n' + str(self.punctuation) + '\n\n'
-        s += 'MIJN EIGENSCHAP:\n' + str(self.my_feature)
+     
         return s
     
     # Voeg hier andere methodes toe.
@@ -227,8 +228,8 @@ class TextModel:
         """
         
         """
-        min_nd1 = min(nd1.values(), default=0)          # bepaal de kleinste waarde van dict1
-        min_nd2 = min(nd2.values(), default=0)          # bepaal de kleinste waarde van dict2
+        min_nd1 = min(nd1.values(), default=0)          # bepaal de kleinste waarde van dict1, geef 0 terug wanneer dict leeg is 
+        min_nd2 = min(nd2.values(), default=0)          # bepaal de kleinste waarde van dict2, geef 0 terug wanneer dict leeg is 
         
         if min_nd1 == min_nd2:
             return min_nd1                              # indien gelijk geef een waarde terug
@@ -240,34 +241,26 @@ class TextModel:
         """
         
         """
-        totaal_nd1 = 0.0
-        totaal_nd2 = 0.0
-        epsilon = self.smallest_value(nd1, nd2) / 2
-
-        for key, value in d.items():
-            if key == 0:
-                totaal_nd1 = 0.01
-            elif key not in nd1.keys():
-                totaal_nd1 += 1 * log2(epsilon)           
-            else:
-                for key1, value1 in nd1.items():
-                    if key == key1:
-                        totaal_nd1 += value * log2(value1)   
+        nd1 = self.normalize_dictionary(nd1)
+        nd2 = self.normalize_dictionary(nd2)
+        
+        totaal_nd1 = 0                                              # init totaal_nd1 op 0
+        totaal_nd2 = 0                            
+        epsilon = self.smallest_value(nd1, nd2) / 2                 # bepaal een kleine waarde epsilon
             
-        for key, value in d.items():
-            if key == 0:
-                totaal_nd2 = 0.01
-            elif key not in nd2.keys():
-                totaal_nd2 += 1 * log2(epsilon)           
+        for k in d:
+            if k in nd1:
+                totaal_nd1 += d[k]*log2(nd1[k])
             else:
-                for key1, value1 in nd2.items():
-                    if key == key1:
-                        totaal_nd2 += value * log2(value1)   
-            
-        self.list_of_log_probs = [totaal_nd1, totaal_nd2]
-
-        return self.list_of_log_probs
+                totaal_nd1 += d[k]*log2(epsilon)
+                
+        for k in d:
+            if k in nd2:
+                totaal_nd2 += d[k]*log2(nd2[k])
+            else:
+                totaal_nd2 += d[k]*log2(epsilon)
     
+        return [totaal_nd1, totaal_nd2]    
     
     def create_all_dictionaries(self):
         """
@@ -287,51 +280,36 @@ class TextModel:
         score_tm1   = 0
         score_tm2   = 0
         
-        ### Words ###
-        nd1_word    =   self.normalize_dictionary(model1.words)
-        nd2_word    =   self.normalize_dictionary(model2.words)
-        
-        wordsscore = self.compare_dictionaries(self.words, nd1_word, nd2_word)
+        ### Words ###      
+        wordsscore = self.compare_dictionaries(self.words, model1.words, model2.words)
         if wordsscore[0] > wordsscore[1]:
             score_tm1 += 1
         else:
             score_tm2 += 1
        
         ### Word lenghts ###
-        nd1_wordlength  = self.normalize_dictionary(model1.word_lengths)
-        nd2_wordlength  = self.normalize_dictionary(model2.word_lengths)
-
-        wordlengthscore = self.compare_dictionaries(self.word_lengths, nd1_wordlength, nd2_wordlength)
+        wordlengthscore = self.compare_dictionaries(self.word_lengths, model1.word_lengths, model2.word_lengths)
         if wordlengthscore[0] > wordlengthscore[1]:
             score_tm1 += 1
         else:
             score_tm2 += 1
   
         ### Zinslengte ###
-        nd1_sentence_len = self.normalize_dictionary(model1.sentence_lengths)
-        nd2_sentence_len = self.normalize_dictionary(model2.sentence_lengths)
-
-        sent_len_score   = self.compare_dictionaries(self.sentence_lengths, nd1_sentence_len, nd2_sentence_len)
+        sent_len_score   = self.compare_dictionaries(self.sentence_lengths, model1.sentence_lengths, model2.sentence_lengths)
         if sent_len_score[0] > sent_len_score[1]:
             score_tm1 += 1
         else:
             score_tm2 += 1
         
         ### Stems ###
-        nd1_stems = self.normalize_dictionary(model1.stems)
-        nd2_stems = self.normalize_dictionary(model2.stems)
-
-        stem_score = self.compare_dictionaries(self.stems, nd1_stems, nd2_stems)
+        stem_score = self.compare_dictionaries(self.stems, model1.stems, model2.stems)
         if stem_score[0] > stem_score[1]:
             score_tm1 += 1
         else:
             score_tm2 += 1
 
-        ### Interpunctie ###
-        nd1_punc = self.normalize_dictionary(model1.punctuation)
-        nd2_punc = self.normalize_dictionary(model2.punctuation)
-        
-        punc_score = self.compare_dictionaries(self.punctuation, nd1_punc, nd2_punc)
+        ### Interpunctie ###      
+        punc_score = self.compare_dictionaries(self.punctuation, model1.punctuation, model2.punctuation)
         if punc_score[0] > punc_score[1]:
             score_tm1 += 1
         else:
@@ -359,23 +337,23 @@ class TextModel:
 
 print(' +++++++++++ Model 1 +++++++++++ ')
 tm1 = TextModel()
-# tm1.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\train1.txt')
-tm1.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\HP1.txt')
+tm1.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\train1.txt')
+# tm1.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\HP1.txt')
 tm1.create_all_dictionaries()  # deze is hierboven gegeven
 print(tm1)
 
 print(' +++++++++++ Model 2 +++++++++++ ')
 tm2 = TextModel()
-# tm2.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\train2.txt')
-tm2.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\Holmes.txt')
+tm2.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\train2.txt')
+# tm2.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\Holmes.txt')
 # tm2.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\HP2.txt')
 tm2.create_all_dictionaries()  # deze is hierboven gegeven
 print(tm2)
 
 print(' +++++++++++ Onbekende tekst +++++++++++ ')
 tm_unknown = TextModel()
-# tm_unknown.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\unknown.txt')
-tm_unknown.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\HP3.txt')
+tm_unknown.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\unknown.txt')
+# tm_unknown.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\HP3.txt')
 tm_unknown.create_all_dictionaries()  # deze is hierboven gegeven
 print(tm_unknown)
 
