@@ -241,11 +241,8 @@ class TextModel:
         """
         min_nd1 = min(nd1.values(), default=0)          # bepaal de kleinste waarde van dict1, geef 0 terug wanneer dict leeg is 
         min_nd2 = min(nd2.values(), default=0)          # bepaal de kleinste waarde van dict2, geef 0 terug wanneer dict leeg is 
-        
-        if min_nd1 == min_nd2:
-            return min_nd1                              # indien gelijk geef een waarde terug
-        else:
-            return min(min_nd1, min_nd2)                # bepaal de kleinste tussen dict1 en dict2
+      
+        return min(min_nd1, min_nd2)                    # bepaal de kleinste tussen dict1 en dict2
      
         
     def compare_dictionaries(self, d, nd1, nd2):
@@ -369,19 +366,19 @@ print(tm1)
 
 print(' +++++++++++ Model 2 +++++++++++ ')
 tm2 = TextModel()
-tm2.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\train2.txt')
+# tm2.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\train2.txt')
 # tm2.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\Holmes.txt')
-# tm2.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\HP2.txt')
-tm2.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\HP1.txt')
+tm2.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\HP2.txt')
+# tm2.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\HP1.txt')
 tm2.create_all_dictionaries()  # deze is hierboven gegeven
 print(tm2)
 
 print(' +++++++++++ Onbekende tekst +++++++++++ ')
 tm_unknown = TextModel()
-tm_unknown.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\unknown.txt')
+# tm_unknown.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\unknown.txt')
 # tm_unknown.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\HP3.txt')
 tm_unknown.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\HP1.txt')
-
+# tm_unknown.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\Holmes.txt')
 tm_unknown.create_all_dictionaries()  # deze is hierboven gegeven
 print(tm_unknown)
 
