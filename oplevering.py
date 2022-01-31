@@ -8,7 +8,7 @@
 import copy
 from string import punctuation
 from math import log2
-from time import sleep
+import snowballstemmer
 
 def clean_the_mess(text, replace_chars, with_this):
         """
@@ -37,10 +37,9 @@ class TextModel:
         self.stems = {}             # Om stammen te tellen
         self.sentence_lengths = {}  # Om zinslengtes te tellen
         self.punctuation = {}       # Interpunctie tellen
-        #
-        # Maak een eigen dictionary
-        #
-        self.my_feature = {}        # Om ... te tellen
+        self.articles = {}          # Om lidwoorden te tellen
+        self.colloquialism = {}     # Om spreektaal vast te stellen 
+
 
     def __repr__(self):
         """
@@ -51,6 +50,8 @@ class TextModel:
         s += 'Stammen:\n' + str(self.stems) + '\n\n'
         s += 'Zinslengtes:\n' + str(self.sentence_lengths) + '\n\n'
         s += 'Leestekens:\n' + str(self.punctuation) + '\n\n'
+        s += 'Lidwoorden:\n' + str(self.articles) + '\n\n'
+        s += 'Spreektaal:\n' + str(self.colloquialism) + '\n\n'
      
         return s
     
@@ -118,8 +119,7 @@ class TextModel:
         argument:       self, s = string
         return:         clean_string, as string
         """
-        from string import punctuation
-        
+       
         clean_string = ""                                               # init clean string als leeg     
 
         # print(punctuation)                                              # TEST-STAP
@@ -190,7 +190,6 @@ class TextModel:
         clean_text = self.clean_string(self.text)
         list_of_words = clean_text.split() 
 
-        import snowballstemmer
         # stemmer = snowballstemmer.stemmer('english');
         stemmer = snowballstemmer.stemmer('dutch')
 
@@ -216,6 +215,61 @@ class TextModel:
                         else:
                             self.punctuation[letter] += 1       
         return self.punctuation
+    
+    def make_articles(self):
+        """
+        method:         the method creates a dictionary with articles and counts the number of equal articles
+        argument:       self
+        return:         make_articles, as dictionary {arcticles: count}
+        """
+        
+        list_of_words = self.clean_string(self.text).split()
+        list_of_articles = ["a", "an", "the"]
+        # list_of_articles = ["de", "het", "een"]
+
+        for word in list_of_words:
+            if word in list_of_articles:
+                if word not in self.articles:
+                    self.articles[word] = 1
+                else:
+                    self.articles[word] += 1
+        return self.articles
+    
+    def make_colloquialism(self):
+        """
+        method:         the method determines if a sentences is colloquialism and counts the number of sentences with colloquialism
+        argument:       self
+        return:         make_colloquialism, as dictionary {colloquialism}
+        """
+    
+        gettext = copy.deepcopy(self.text)
+        
+        replace_chars = [".\"", "!\"", "?\""]          
+        with_this = "-ENDCOL"
+        gettext = clean_the_mess(gettext, replace_chars, with_this)
+        
+        replace_chars = ["\""]
+        with_this = "STARTCOL-"
+        gettext = clean_the_mess(gettext, replace_chars, with_this)
+        
+        replace_chars = [".", "!", "?"]          
+        with_this = "-ENDSEN"
+        gettext = clean_the_mess(gettext, replace_chars, with_this)
+        
+        words = gettext.split()
+             
+        self.colloquialism["non_colloquialism"] = 0
+        self.colloquialism["colloquialism"]     = 0
+     
+        for word in words:
+            if word.find("STARTCOL-") != -1 or word.find("-ENDCOL") != -1 or word.find("-ENDSEN") != -1:
+                if word.find("-ENDSEN") != -1:
+                    self.colloquialism["non_colloquialism"] += 1
+                if word.find("STARTCOL-") != -1:
+                    self.colloquialism["colloquialism"] += 1
+                        
+        return self.colloquialism
+        
     
     def normalize_dictionary(self,d):
         """
@@ -263,16 +317,18 @@ class TextModel:
         epsilon = self.smallest_value(norm_dict1, norm_dict2) / 2           
             
         for k in d:
-            if k in norm_dict1:
-                totaal_nd1 += d[k]*log2(norm_dict1[k])
-            else:
-                totaal_nd1 += d[k]*log2(epsilon)
+            if d[k] != 0 and norm_dict1 != 0:                           # de testbestanden leveren een waarde 0 voor spreektaal
+                if k in norm_dict1:
+                    totaal_nd1 += d[k]*log2(norm_dict1[k])
+                else:
+                    totaal_nd1 += d[k]*log2(epsilon)
                 
         for k in d:
-            if k in norm_dict2:
-                totaal_nd2 += d[k]*log2(norm_dict2[k])
-            else:
-                totaal_nd2 += d[k]*log2(epsilon)
+            if d[k] != 0 and norm_dict2 != 0:                           # de testbestanden leveren een waarde 0 voor spreektaal
+                if k in norm_dict2:
+                    totaal_nd2 += d[k]*log2(norm_dict2[k])
+                else:
+                    totaal_nd2 += d[k]*log2(epsilon)
     
         return [totaal_nd1, totaal_nd2]    
     
@@ -287,6 +343,8 @@ class TextModel:
         self.make_words()
         self.make_stems()
         self.make_punctuation()
+        self.make_articles()
+        self.make_colloquialism()
      
     
     def compare_text_with_two_models(self, model1, model2):
@@ -335,6 +393,20 @@ class TextModel:
         elif punc_score[0] < punc_score[1]:
             score_tm2 += 1
      
+        ### Articles ###      
+        articles_score = self.compare_dictionaries(self.articles, model1.articles, model2.articles)
+        if articles_score[0] > articles_score[1]:
+            score_tm1 += 1
+        elif articles_score[0] < articles_score[1]:
+            score_tm2 += 1
+     
+        ### Colloquialism ###
+        colloquialism_score = self.compare_dictionaries(self.colloquialism, model1.colloquialism, model2.colloquialism)
+        if colloquialism_score[0] > colloquialism_score[1]:
+            score_tm1 += 1
+        elif colloquialism_score[0] < colloquialism_score[1]:
+            score_tm2 += 1
+        
         ### Winnaar ###
         print("Vergelijkingsresultaten:\n")
         print(f"     {'naam':>20s}   {'model1':>10s}   {'model2':>10s} ")
@@ -344,6 +416,8 @@ class TextModel:
         print(f"     {'sentence_lengths':>20s}   {sent_len_score[0]:>10.2f}   {sent_len_score[1]:>10.2f} ")
         print(f"     {'stems':>20s}   {stem_score[0]:>10.2f}   {stem_score[1]:>10.2f} ") 
         print(f"     {'punctuation':>20s}   {punc_score[0]:>10.2f}   {punc_score[1]:>10.2f} ") 
+        print(f"     {'articles':>20s}   {articles_score[0]:>10.2f}   {articles_score[1]:>10.2f} ")
+        print(f"     {'colloquialism':>20s}   {colloquialism_score[0]:>10.2f}   {colloquialism_score[1]:>10.2f} ")
         print("\n")
         print(f"--> Model 1 wint op {score_tm1} features")
         print(f"--> Model 2 wint op {score_tm2} features")
@@ -354,32 +428,36 @@ class TextModel:
         elif score_tm1 < score_tm2:
             print("+++++ Model 2 komt beter overeen ! +++++")
         else:
-            print('+++++ Geen winnaar +++++')
+            print("+++++ Geen winnaar +++++")
 
+##################### Initialiseren naar persoonlijke DEV-environment #####################
+# Set path naar de locatie van tekst-bestanden
+path_tekstbestanden = """C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\"""
+##################### Initialiseren naar persoonlijke DEV-environment #####################
 
 print(' +++++++++++ Model 1 +++++++++++ ')
 tm1 = TextModel()
-# tm1.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\train1.txt')
-tm1.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\HP1.txt')
+tm1.read_text_from_file(path_tekstbestanden+"train1.txt")
+# tm1.read_text_from_file(path_tekstbestanden+"HP1.txt")
 tm1.create_all_dictionaries()  # deze is hierboven gegeven
 print(tm1)
 
 print(' +++++++++++ Model 2 +++++++++++ ')
 tm2 = TextModel()
-# tm2.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\train2.txt')
-# tm2.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\Holmes.txt')
-tm2.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\HP2.txt')
-# tm2.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\HP1.txt')
+tm2.read_text_from_file(path_tekstbestanden+"train2.txt")
+# tm2.read_text_from_file(path_tekstbestanden+"Holmes.txt")
+# tm2.read_text_from_file(path_tekstbestanden+"HP2.txt")
+# tm2.read_text_from_file(path_tekstbestanden+"HP1.txt")
 tm2.create_all_dictionaries()  # deze is hierboven gegeven
 print(tm2)
 
 print(' +++++++++++ Onbekende tekst +++++++++++ ')
 tm_unknown = TextModel()
-# tm_unknown.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\unknown.txt')
-# tm_unknown.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\HP3.txt')
-tm_unknown.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\HP1.txt')
-# tm_unknown.read_text_from_file('C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\Holmes.txt')
+tm_unknown.read_text_from_file(path_tekstbestanden+"unknown.txt")
+# tm_unknown.read_text_from_file(path_tekstbestanden+"HP2.txt")
+# tm_unknown.read_text_from_file(path_tekstbestanden+"HP1.txt")
+# tm_unknown.read_text_from_file(path_tekstbestanden+"Holmes.txt")
 tm_unknown.create_all_dictionaries()  # deze is hierboven gegeven
-print(tm_unknown)
 
+print(tm_unknown)
 print(tm_unknown.compare_text_with_two_models(tm1,tm2))
