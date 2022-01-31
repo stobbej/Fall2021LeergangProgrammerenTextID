@@ -6,9 +6,9 @@
 # Naam              : Marlies Wanders, Jeroen van Kleef, Jeroen Stobbe
 #
 import copy
+import snowballstemmer
 from string import punctuation
 from math import log2
-import snowballstemmer
 
 def clean_the_mess(text, replace_chars, with_this):
         """
@@ -39,7 +39,6 @@ class TextModel:
         self.punctuation = {}       # Interpunctie tellen
         self.articles = {}          # Om lidwoorden te tellen
         self.colloquialism = {}     # Om spreektaal vast te stellen 
-
 
     def __repr__(self):
         """
@@ -89,27 +88,20 @@ class TextModel:
         with_this = " "            
         gettext = clean_the_mess(gettext, replace_chars, with_this) 
       
-        sentences = gettext.split(".")                                           # splits de tekst in zinnen (bij punt)
-        self.sentence_lengths = {}                                                  # init dictionary
-        sentence = 0                                                                # init teller
-        
-        # print(sentences)                                                            # TEST-STAP
-        
-        for sentence in sentences:                                                  # doorloop elke zin in zinnen
-            # print(sentence)                                                         # TEST-STAP
-            just_words = sentence.split()                                           # splits zin op in woorden
-            # print(just_words)                                                       # TEST-STAP
-            length = len(just_words)                                                # tel aantal woorden in just_words
-            # print(length)                                                           # TEST-STAP
-
-            if length == 0:                                                         # als aantal woorden = 0
-                    continue                                                        # ga verder
-            elif length not in self.sentence_lengths:                               # als aantal woorden NIET in dict
-                self.sentence_lengths[length] = 1                                   # maak key aan met waarde 1
-                # print(self.sentence_lengths)                                        # TEST-STAP
-            else:                                                                   # aantal woorden WEL in dict
-                self.sentence_lengths[length] += 1                                  # verhoog key met waarde 1
-                # print(self.sentence_lengths)                                        # TEST-STAP
+        sentences = gettext.split(".")                                           
+        self.sentence_lengths = {}                                                 
+        sentence = 0                                                            
+               
+        for sentence in sentences:                                                
+            just_words = sentence.split()                                           
+            length = len(just_words)                                                
+          
+            if length == 0:                                                         
+                    continue                                                        
+            elif length not in self.sentence_lengths:                               
+                self.sentence_lengths[length] = 1                                   
+            else:                                                                   
+                self.sentence_lengths[length] += 1                                 
         
         return self.sentence_lengths
  
@@ -120,18 +112,13 @@ class TextModel:
         return:         clean_string, as string
         """
        
-        clean_string = ""                                               # init clean string als leeg     
-
-        # print(punctuation)                                              # TEST-STAP
+        clean_string = ""   
+                
+        for p in punctuation:                                        
+            s = s.replace(p, "")                                   
         
-        for p in punctuation:                                           # voor elke interpunctie doorloop string
-            # print(p)                                                    # TEST-STAP
-            s = s.replace(p, "")                                        # vervang interpunctie door leeg
-            # print(s)                                                    # TEST-STAP
-        
-        clean_string = s.lower()                                        # zet string in lower caps
-        # print(clean_string)                                             # TEST-STAP
-            
+        clean_string = s.lower()                                   
+                    
         return clean_string    
 
     def make_word_lengths(self):
@@ -146,15 +133,12 @@ class TextModel:
         tekst = self.clean_string(s)
         words = tekst.split()
         
-        #print(words)
-
         for word in words:
             if len(word) not in self.word_lengths:
                 self.word_lengths[len(word)] = 1
             else:
                 self.word_lengths[len(word)] += 1
 
-        #print(self.make_word_lengths)
         return self.word_lengths
 
     def make_words(self):
@@ -169,15 +153,12 @@ class TextModel:
         tekst = self.clean_string(s)
         words = tekst.split()
         
-        #print(words)
-
         for word in words:
             if word not in self.words:
                 self.words[word] = 1
             else:
                 self.words[word] += 1
 
-        #print(self.make_words)
         return self.words  
 
     def make_stems(self):
@@ -269,7 +250,6 @@ class TextModel:
                     self.colloquialism["colloquialism"] += 1
                         
         return self.colloquialism
-        
     
     def normalize_dictionary(self,d):
         """
@@ -278,12 +258,11 @@ class TextModel:
                         d: as dictionary
         return:         normalized dictionary
         """
-        totaal = sum(d.values())                        # Sum van alle entries in een dictionary
+        totaal = sum(d.values())    
         
-        for key, value in d.items():                    # Doorloop alle entries en pak waarde
-            d[key] = value / totaal                     # Normaliseer 
-        return d                                        # Geef genormaliseerde dict terug
-    
+        for key, value in d.items():
+            d[key] = value / totaal 
+        return d                    
     
     def smallest_value(self, nd1, nd2):
         """
@@ -293,11 +272,10 @@ class TextModel:
                         nd2: normalized dictionary 2
         return          smallest_value of a dictionary 1 or 2
         """
-        min_nd1 = min(nd1.values(), default=0)          # bepaal de kleinste waarde van dict1, geef 0 terug wanneer dict leeg is 
-        min_nd2 = min(nd2.values(), default=0)          # bepaal de kleinste waarde van dict2, geef 0 terug wanneer dict leeg is 
+        min_nd1 = min(nd1.values(), default=0)                          # geef 0 terug wanneer dict leeg is 
+        min_nd2 = min(nd2.values(), default=0)                          # geef 0 terug wanneer dict leeg is 
       
-        return min(min_nd1, min_nd2)                    # bepaal de kleinste tussen dict1 en dict2
-     
+        return min(min_nd1, min_nd2)    
         
     def compare_dictionaries(self, d, nd1, nd2):
         """
@@ -345,7 +323,6 @@ class TextModel:
         self.make_punctuation()
         self.make_articles()
         self.make_colloquialism()
-     
     
     def compare_text_with_two_models(self, model1, model2):
         """
@@ -458,6 +435,6 @@ tm_unknown = TextModel()
 tm_unknown.read_text_from_file(path_tekstbestanden+"HP1.txt")
 # tm_unknown.read_text_from_file(path_tekstbestanden+"Holmes.txt")
 tm_unknown.create_all_dictionaries()  # deze is hierboven gegeven
-
 print(tm_unknown)
+
 print(tm_unknown.compare_text_with_two_models(tm1,tm2))
