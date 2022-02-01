@@ -38,7 +38,7 @@ class TextModel:
         self.sentence_lengths = {}  # Om zinslengtes te tellen
         self.punctuation = {}       # Interpunctie tellen
         self.articles = {}          # Om lidwoorden te tellen
-        self.colloquialism = {}     # Om spreektaal vast te stellen 
+        self.quotes = {}     # Om spreektaal vast te stellen 
 
     def __repr__(self):
         """
@@ -50,7 +50,7 @@ class TextModel:
         s += 'Zinslengtes:\n' + str(self.sentence_lengths) + '\n\n'
         s += 'Leestekens:\n' + str(self.punctuation) + '\n\n'
         s += 'Lidwoorden:\n' + str(self.articles) + '\n\n'
-        s += 'Spreektaal:\n' + str(self.colloquialism) + '\n\n'
+        s += 'Spreektaal:\n' + str(self.quotes) + '\n\n'
      
         return s
     
@@ -216,11 +216,11 @@ class TextModel:
                     self.articles[word] += 1
         return self.articles
     
-    def make_colloquialism(self):
+    def make_quotes(self):
         """
-        method:         the method determines if a sentences is colloquialism and counts the number of sentences with colloquialism
+        method:         the method determines if a sentences is quotes and counts the number of sentences with quotes
         argument:       self
-        return:         make_colloquialism, as dictionary {colloquialism}
+        return:         make_quotes, as dictionary {quotes}
         """
     
         gettext = copy.deepcopy(self.text)
@@ -239,17 +239,17 @@ class TextModel:
         
         words = gettext.split()
              
-        self.colloquialism["non_colloquialism"] = 0
-        self.colloquialism["colloquialism"]     = 0
+        self.quotes["non_quotes"] = 0
+        self.quotes["quotes"]     = 0
      
         for word in words:
             if word.find("STARTCOL-") != -1 or word.find("-ENDCOL") != -1 or word.find("-ENDSEN") != -1:
                 if word.find("-ENDSEN") != -1:
-                    self.colloquialism["non_colloquialism"] += 1
+                    self.quotes["non_quotes"] += 1
                 if word.find("STARTCOL-") != -1:
-                    self.colloquialism["colloquialism"] += 1
+                    self.quotes["quotes"] += 1
                         
-        return self.colloquialism
+        return self.quotes
     
     def normalize_dictionary(self,d):
         """
@@ -322,7 +322,7 @@ class TextModel:
         self.make_stems()
         self.make_punctuation()
         self.make_articles()
-        self.make_colloquialism()
+        self.make_quotes()
     
     def compare_text_with_two_models(self, model1, model2):
         """
@@ -377,11 +377,11 @@ class TextModel:
         elif articles_score[0] < articles_score[1]:
             score_tm2 += 1
      
-        ### Colloquialism ###
-        colloquialism_score = self.compare_dictionaries(self.colloquialism, model1.colloquialism, model2.colloquialism)
-        if colloquialism_score[0] > colloquialism_score[1]:
+        ### quotes ###
+        quotes_score = self.compare_dictionaries(self.quotes, model1.quotes, model2.quotes)
+        if quotes_score[0] > quotes_score[1]:
             score_tm1 += 1
-        elif colloquialism_score[0] < colloquialism_score[1]:
+        elif quotes_score[0] < quotes_score[1]:
             score_tm2 += 1
         
         ### Winnaar ###
@@ -394,7 +394,7 @@ class TextModel:
         print(f"     {'stems':>20s}   {stem_score[0]:>10.2f}   {stem_score[1]:>10.2f} ") 
         print(f"     {'punctuation':>20s}   {punc_score[0]:>10.2f}   {punc_score[1]:>10.2f} ") 
         print(f"     {'articles':>20s}   {articles_score[0]:>10.2f}   {articles_score[1]:>10.2f} ")
-        print(f"     {'colloquialism':>20s}   {colloquialism_score[0]:>10.2f}   {colloquialism_score[1]:>10.2f} ")
+        print(f"     {'quotes':>20s}   {quotes_score[0]:>10.2f}   {quotes_score[1]:>10.2f} ")
         print("\n")
         print(f"--> Model 1 wint op {score_tm1} features")
         print(f"--> Model 2 wint op {score_tm2} features")
