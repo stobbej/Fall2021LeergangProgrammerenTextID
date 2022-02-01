@@ -39,6 +39,8 @@ class TextModel:
         self.punctuation = {}       # Interpunctie tellen
         self.articles = {}          # Om lidwoorden te tellen
         self.quotes = {}     # Om spreektaal vast te stellen 
+        self.relative_pronouns = {} # Om gebruik betrekkelijk voornaamwoorden vast te stellen
+        self.adjectives = {}        # Om gebruik bijvoeglijk naamwoorden vast te stellen																							 																				
 
     def __repr__(self):
         """
@@ -51,6 +53,8 @@ class TextModel:
         s += 'Leestekens:\n' + str(self.punctuation) + '\n\n'
         s += 'Lidwoorden:\n' + str(self.articles) + '\n\n'
         s += 'Spreektaal:\n' + str(self.quotes) + '\n\n'
+        s += 'Betrekkelijk voornaamwoorden:\n' + str(self.relative_pronouns) + '\n\n'
+        s += 'Bijvoeglijk naamwoorden:\n' + str(self.adjectives) + '\n\n'																				 																	 
      
         return s
     
@@ -250,7 +254,54 @@ class TextModel:
                     self.quotes["quotes"] += 1
                         
         return self.quotes
+
+    def make_relative_pronouns(self):
+        """
+        method:         the method creates a dictionary of the use of relative pronouns
+        argument:       self
+        return:         self.relative_pronouns, as dictionary {pronoun: count}
+        """
+
+        self.relative_pronouns = {}  
+        s = self.text.lower()
+        tekst = self.clean_string(s)
+        words = tekst.split()       
+        
+        pronouns = ["which", "that", "who", "what", "whose", "whom"]
+        
+        for word in words:
+            if word in pronouns:
+                if word not in self.relative_pronouns:
+                    self.relative_pronouns[word] = 1
+                else:
+                    self.relative_pronouns[word] += 1
+
+        #print(self.relative_pronouns)
+        return self.relative_pronouns   
     
+    def make_adjectives(self):
+        """
+        method:         the method creates a dictionary of the use of adjectives that express tone or emotion
+        argument:       self
+        return:         self.adjectives, as dictionary {adjective: count}
+        """
+        
+        self.adjectives = {}
+        s = self.text.lower()
+        tekst = self.clean_string(s)
+        words = tekst.split()    
+                 
+        emotion_adjectives = ["amazed","aggravated","anxious","attractive","awful","awestruck","bold","chilly","bashful","brave","dejected","cautious","bubbly","dirty","composed”,”cheerful","dreadful","easygoing","comfortable","heavy","horrified","delightful","irritated","intelligent","excited","pessimistic","numb","festive","tearful","puzzled","free","tense","quizzical","jolly","terrible","ravenous","optimistic","tired","reluctant","proud","ugly","settled","wonderful","weak","shy","appreciative","angry","accepting","blissful","disenchanted","calm","contented","distressed","confident","ecstatic","glum","cool","elated","gloomy","earnest","glad","grumpy","easy","happy","grouchy","evenhanded","joyful","miserable","indifferent","jubilant","mad","neutral","merry","moody","nostalgic","respectful","nervous","passive","sweet","sad","reserved","serene","sadistic","satisfied","upbeat","selfish","sentimental","vivacious","sour","surprised","agreeable","annoyed","acerbic","animated","bitter","ambivalent","bright","disgruntled","ardent","clever","disgusted","candid","encouraging","evil","cautionary","fresh","guilt","conciliatory","gentle","hostile","knowledgeable","hopeful","hurtful","mysterious","kind","nasty","pragmatic","loving","obnoxious","regretful","open","oppressive","resigned","pleased","overbearing","satirical","supportive","resentful","secretive","sympathetic","sarcastic","solemn","warm","sardonic","strong"]
+            
+        for word in words:
+            if word in emotion_adjectives:
+                if word not in self.adjectives:
+                    self.adjectives[word] = 1
+                else:
+                    self.adjectives[word] += 1   
+        
+        return self.adjectives
+	
     def normalize_dictionary(self,d):
         """
         method:         the method creates from a dictionary a normalized dictionary
@@ -323,6 +374,8 @@ class TextModel:
         self.make_punctuation()
         self.make_articles()
         self.make_quotes()
+        self.make_relative_pronouns()
+        self.make_adjectives()							  
     
     def compare_text_with_two_models(self, model1, model2):
         """
@@ -383,6 +436,20 @@ class TextModel:
             score_tm1 += 1
         elif quotes_score[0] < quotes_score[1]:
             score_tm2 += 1
+            
+        ### Relative pronouns ###
+        pronouns_score = self.compare_dictionaries(self.relative_pronouns, model1.relative_pronouns, model2.relative_pronouns)
+        if pronouns_score[0] > pronouns_score[1]:
+            score_tm1 += 1
+        elif pronouns_score[0] < pronouns_score[1]:
+            score_tm2 += 1
+            
+        ### Adjectives ###
+        adjectives_score = self.compare_dictionaries(self.adjectives, model1.adjectives, model2.adjectives)
+        if adjectives_score[0] > adjectives_score[1]:
+            score_tm1 += 1
+        elif adjectives_score[0] < adjectives_score[1]:						  
+            score_tm2 += 1
         
         ### Winnaar ###
         print("Vergelijkingsresultaten:\n")
@@ -395,6 +462,8 @@ class TextModel:
         print(f"     {'punctuation':>20s}   {punc_score[0]:>10.2f}   {punc_score[1]:>10.2f} ") 
         print(f"     {'articles':>20s}   {articles_score[0]:>10.2f}   {articles_score[1]:>10.2f} ")
         print(f"     {'quotes':>20s}   {quotes_score[0]:>10.2f}   {quotes_score[1]:>10.2f} ")
+        print(f"     {'relative_pronouns':>20s}   {pronouns_score[0]:>10.2f}   {pronouns_score[1]:>10.2f} ")
+        print(f"     {'adjectives':>20s}   {adjectives_score[0]:>10.2f}   {adjectives_score[1]:>10.2f} ")																											
         print("\n")
         print(f"--> Model 1 wint op {score_tm1} features")
         print(f"--> Model 2 wint op {score_tm2} features")
