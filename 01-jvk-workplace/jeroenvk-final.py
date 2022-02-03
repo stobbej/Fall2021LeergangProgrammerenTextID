@@ -60,7 +60,7 @@ class TextModel:
         s += 'Bijvoeglijk naamwoorden:\n' + str(self.adjectives) + '\n\n'
         s += 'Woordschat:\n' + str(self.woordenschat) + '\n\n'
         s += 'Hulpwerkwoorden:\n' + str(self.modals) + '\n\n'
-        s += 'Bezittelijkheid:\n' + str(self.possessives) + '\n\n'																				 																	 
+        s += 'Bezittelijke voornaamwoorden:\n' + str(self.possessives) + '\n\n'																				 																	 
      
         return s
     
@@ -349,15 +349,17 @@ class TextModel:
         Argument: self.
         Return: number of modals used in the source material (int) and a dict of the possessives itself.
         """
+        print("hoi")
         # Deel 1: maak deep copy zodat origineel behouden blijft.
         gettext = copy.deepcopy(self.text)
         gettext = self.clean_string(gettext)
         gettext = gettext.lower()
+        print (gettext)
 
         # Deel 2: Splits het in woorden op en tel woord voor woord wat het aantal is. Schrijf die weg naar self.modals.
         sourcematerial = gettext.split()
         # Possessives / bezittelijke woorden
-        possessives = ["my", "your", "his", "her", "its", "our", "their", "mine", "yours", "his", "hers", "ours", "yours", "theirs"]
+        possessives = ["my", "your", "his", "her", "its", "our", "their"]
 
         for word in sourcematerial:
             if word == "":
@@ -365,10 +367,10 @@ class TextModel:
                 continue
             if word in possessives:                 
                 if word not in self.possessives:
-                    #print(word)
+                    print(word)
                     self.possessives[word] = 1
                 else:
-                    #print(word)
+                    print(word)
                     self.possessives[word] += 1
         
         return
@@ -537,19 +539,6 @@ class TextModel:
             score_tm1 += 1
         elif possessives_score[0] < possessives_score[1]:						  
             score_tm2 += 1
-
-        ### Woordenschat ###
-        halfway_point = (model1.woordenschat + model2.woordenschat) / 2
-        if model1.woordenschat < model2.woordenschat:
-            if self.woordenschat < halfway_point:
-                score_tm1 += 1
-            else:
-                score_tm2 +=1
-        else:    
-            if self.woordenschat > halfway_point:
-                score_tm1 += 1
-            else:
-                score_tm2 +=1
         
         ### Winnaar ###
         print("Vergelijkingsresultaten:\n")
@@ -565,8 +554,7 @@ class TextModel:
         print(f"     {'relative_pronouns':>20s}   {pronouns_score[0]:>10.2f}   {pronouns_score[1]:>10.2f} ")
         print(f"     {'adjectives':>20s}   {adjectives_score[0]:>10.2f}   {adjectives_score[1]:>10.2f} ")																											
         print(f"     {'modals':>20s}   {modals_score[0]:>10.2f}   {modals_score[1]:>10.2f} ")																											
-        print(f"     {'possessives':>20s}   {possessives_score[0]:>10.2f}   {possessives_score[1]:>10.2f} ")
-        print(f"     {'vocabulary':>20s}   {tm1.woordenschat:>10.2f}   {tm2.woordenschat:>10.2f} ")																																																						
+        print(f"     {'possessives':>20s}   {possessives_score[0]:>10.2f}   {possessives_score[1]:>10.2f} ")																											
         print("\n")
         print(f"--> Model 1 wint op {score_tm1} features")
         print(f"--> Model 2 wint op {score_tm2} features")
@@ -587,15 +575,15 @@ path_tekstbestanden = ""
 
 print(' +++++++++++ Model 1 +++++++++++ ')
 tm1 = TextModel()
-#tm1.read_text_from_file(path_tekstbestanden+"train1.txt")
-tm1.read_text_from_file(path_tekstbestanden+"HP1.txt")
+tm1.read_text_from_file(path_tekstbestanden+"test.txt")
+#tm1.read_text_from_file(path_tekstbestanden+"HP1.txt")
 tm1.create_all_dictionaries()  # deze is hierboven gegeven
 print(tm1)
 
 print(' +++++++++++ Model 2 +++++++++++ ')
 tm2 = TextModel()
-#tm2.read_text_from_file(path_tekstbestanden+"train2.txt")
-tm2.read_text_from_file(path_tekstbestanden+"Holmes.txt")
+tm2.read_text_from_file(path_tekstbestanden+"test.txt")
+#tm2.read_text_from_file(path_tekstbestanden+"Holmes.txt")
 #tm2.read_text_from_file(path_tekstbestanden+"HP2.txt")
 # tm2.read_text_from_file(path_tekstbestanden+"HP1.txt")
 tm2.create_all_dictionaries()  # deze is hierboven gegeven
@@ -603,8 +591,8 @@ print(tm2)
 
 print(' +++++++++++ Onbekende tekst +++++++++++ ')
 tm_unknown = TextModel()
-#tm_unknown.read_text_from_file(path_tekstbestanden+"unknown.txt")
-tm_unknown.read_text_from_file(path_tekstbestanden+"HP2.txt")
+tm_unknown.read_text_from_file(path_tekstbestanden+"test.txt")
+# tm_unknown.read_text_from_file(path_tekstbestanden+"HP2.txt")
 # tm_unknown.read_text_from_file(path_tekstbestanden+"HP1.txt")
 # tm_unknown.read_text_from_file(path_tekstbestanden+"Holmes.txt")
 tm_unknown.create_all_dictionaries()  # deze is hierboven gegeven
