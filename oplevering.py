@@ -40,7 +40,9 @@ class TextModel:
         self.articles = {}          # Om lidwoorden te tellen
         self.quotes = {}     # Om spreektaal vast te stellen 
         self.relative_pronouns = {} # Om gebruik betrekkelijk voornaamwoorden vast te stellen
-        self.adjectives = {}        # Om gebruik bijvoeglijk naamwoorden vast te stellen																							 																				
+        self.adjectives = {}        # Om gebruik bijvoeglijk naamwoorden vast te stellen
+        self.modals = {}            # Om modals te tellen -> de dict van modals met counts
+        self.woordenschat = {}      # Om woordenschat te tellen																							 																				
 
     def __repr__(self):
         """
@@ -54,7 +56,9 @@ class TextModel:
         s += 'Lidwoorden:\n' + str(self.articles) + '\n\n'
         s += 'Spreektaal:\n' + str(self.quotes) + '\n\n'
         s += 'Betrekkelijk voornaamwoorden:\n' + str(self.relative_pronouns) + '\n\n'
-        s += 'Bijvoeglijk naamwoorden:\n' + str(self.adjectives) + '\n\n'																				 																	 
+        s += 'Bijvoeglijk naamwoorden:\n' + str(self.adjectives) + '\n\n'
+        s += 'Woordschat:\n' + str(self.woordenschat) + '\n\n'
+        s += 'Hulpwerkwoorden:\n' + str(self.modals) + '\n\n'																				 																	 
      
         return s
     
@@ -162,6 +166,9 @@ class TextModel:
                 self.words[word] = 1
             else:
                 self.words[word] += 1
+
+        # De woordenschat kan ook direct worden toegevoegd.
+        self.woordenschat = len(self.words)      
 
         return self.words  
 
@@ -301,6 +308,44 @@ class TextModel:
                     self.adjectives[word] += 1   
         
         return self.adjectives
+
+    def make_modals(self):
+        """
+        Method: Detect commonly used modals in text.
+        Argument: self.
+        Return: number of modals used in the source material (int) and a dict of the modals itself.
+        """
+        # Deel 1: maak deep copy zodat origineel behouden blijft.
+        # Zet daarna alles op lower case, vervang leestekens en vervang enters.
+        gettext = copy.deepcopy(self.text)
+        gettext = gettext.lower()
+        replace_chars = ["\"", ".", ",", "\'", "....", "...", "--", "?", "!"]            
+        with_this = ""
+        gettext = clean_the_mess(gettext, replace_chars, with_this)
+
+        replace_chars = ["\n"]            
+        with_this = " "            
+        gettext = clean_the_mess(gettext, replace_chars, with_this) 
+
+        # Deel 2: Splits het in woorden op en tel woord voor woord wat het aantal is. Schrijf die weg naar self.modals.
+        sourcematerial = gettext.split()
+
+        # Modals / Hulpwerkwoorden
+        modals = ["can", "may", "might", "could", "should", "would", "will", "must"]
+
+        for word in sourcematerial:
+            if word == "":
+                #print(word)
+                continue
+            if word in modals:                 
+                if word not in self.modals:
+                    #print(word)
+                    self.modals[word] = 1
+                else:
+                    #print(word)
+                    self.modals[word] += 1
+        
+        return
 	
     def normalize_dictionary(self,d):
         """
@@ -376,6 +421,7 @@ class TextModel:
         self.make_quotes()
         self.make_relative_pronouns()
         self.make_adjectives()							  
+        self.make_modals()
     
     def compare_text_with_two_models(self, model1, model2):
         """
@@ -450,6 +496,13 @@ class TextModel:
             score_tm1 += 1
         elif adjectives_score[0] < adjectives_score[1]:						  
             score_tm2 += 1
+
+        ### Modals ###
+        modals_score = self.compare_dictionaries(self.modals, model1.modals, model2.modals)
+        if modals_score[0] > modals_score[1]:
+            score_tm1 += 1
+        elif modals_score[0] < modals_score[1]:						  
+            score_tm2 += 1
         
         ### Winnaar ###
         print("Vergelijkingsresultaten:\n")
@@ -464,6 +517,7 @@ class TextModel:
         print(f"     {'quotes':>20s}   {quotes_score[0]:>10.2f}   {quotes_score[1]:>10.2f} ")
         print(f"     {'relative_pronouns':>20s}   {pronouns_score[0]:>10.2f}   {pronouns_score[1]:>10.2f} ")
         print(f"     {'adjectives':>20s}   {adjectives_score[0]:>10.2f}   {adjectives_score[1]:>10.2f} ")																											
+        print(f"     {'modals':>20s}   {modals_score[0]:>10.2f}   {modals_score[1]:>10.2f} ")																											
         print("\n")
         print(f"--> Model 1 wint op {score_tm1} features")
         print(f"--> Model 2 wint op {score_tm2} features")
@@ -478,7 +532,8 @@ class TextModel:
 
 ##################### Initialiseren naar persoonlijke DEV-environment #####################
 # Set path naar de locatie van tekst-bestanden
-path_tekstbestanden = """C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\"""
+#path_tekstbestanden = """C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\"""
+path_tekstbestanden = ""
 ##################### Initialiseren naar persoonlijke DEV-environment #####################
 
 print(' +++++++++++ Model 1 +++++++++++ ')
@@ -491,8 +546,8 @@ print(tm1)
 print(' +++++++++++ Model 2 +++++++++++ ')
 tm2 = TextModel()
 # tm2.read_text_from_file(path_tekstbestanden+"train2.txt")
-# tm2.read_text_from_file(path_tekstbestanden+"Holmes.txt")
-tm2.read_text_from_file(path_tekstbestanden+"HP2.txt")
+tm2.read_text_from_file(path_tekstbestanden+"Holmes.txt")
+#tm2.read_text_from_file(path_tekstbestanden+"HP2.txt")
 # tm2.read_text_from_file(path_tekstbestanden+"HP1.txt")
 tm2.create_all_dictionaries()  # deze is hierboven gegeven
 print(tm2)
