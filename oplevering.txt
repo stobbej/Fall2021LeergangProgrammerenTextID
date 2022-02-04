@@ -1,4 +1,69 @@
-Help on class TextModel in module __main__:
+Beschrijving van de analyse:
+Onze applicatie vergelijkt drie teksten met elkaar. Deze drie teksten bestaan uit twee bron teksten van twee verschillende auteurs. Dit zijn model1 en model2. Deze twee teksten worden vervolgens vergeleken met de derde tekst van een onbekende auteur. Op basis teksteigenschappen zoals woordlengte, woordkeuze, betrekkelijke voornaamwoorden en hulpwerkwoorden proberen we een handtekening van een auteur vast te stellen. Die handtekening houden we vervolgens tegen de onbekende tekst aan in de hoop de auteur te kunnen identificieren.
+
+De analyse van de teksten vindt plaats op volgorde van invoer waarbij twee modellen op het scherm worden gepresenteerd. De derde tekst (de unknown) wordt vervolgens vergeleken met model 1 en model 2. Wanneer de onbekende tekst dichter bij een tekst ligt, wordt er een punt opgeteld bij de score. Bij een score van meer dan de helft van de testen "wint" dat model. Op dat moment is het waarschijnlijker dat de tekst is geschreven door het winnende model dan door het verliezende model.
+
+Daarbij merken we wel op dat een 7-5 uitslag uiteraard iets minder zegt dant 11-1 of 12-0.
+
+De 12 teksteigenschappen waar we op testen zijn:
+* woorden
+* woordlengte
+* zinslengte
+* woordstammen
+* interpunctie
+* lidwoorden
+* citaten
+* betrekkelijke voornaamwoorden
+* bezittelijke voornaamwoorden
+* uitdrukkingen van toon of emotie
+* hulpwerkwoorden
+* woordenschat
+
+De zelf toegevoegde eigenschappen zijn:
+
+[citaten]
+
+[lidwoorden]
+
+[betrekkelijke voornaamwoorden]
+
+[bezittelijke voornaamwoorden]
+Bezittelijke voornaamworden (possessives) duiden aan 'van wie' een bepaald object is. In het Engels gaat het dan om een woord als "mine" of "yours". Bij deze eigenschap wordt het voorkomen van possessives en de hoeveelheid afgezet tegen de andere teksten. De tekst die het dichtste bij de verdeling van de onbekende tekst komt, wint.
+
+[uitdrukkingen van toon of emotie]
+
+[hulpwerkwoorden]
+Hulpwerkwoorden (modals verbs) zijn aanvullende werkwoorden die de structuur van een zin bepalen. In dit geval (Engels) gaat het om deze woorden: can, may, must, shall, will, could, might, should en would. In het tekstmodel worden de teksten vergeleken o.b.v. de hoeveelheid waarin deze hulpwerkwoorden voor komen. De tekst die het dichtst bij komt, wint.
+
+[woordenschat]
+Deze eigenschap vergelijkt de woordenschat die is gebruikt voor iedere tekst. Dit gebruikt de dictionary words, maar kijkt daarbij alleen naar de lengte van die dictionary om vast te stellen hoeveel verschillende woorden zijn gebruikt. Het tekstmodel dat het dichtst bij de onbekende tekst komt, wint. 
+
+Belangrijk hierbij om op te merken is dat deze functie gevoelig is voor de lengte van de teksten en dus vooral tot zijn recht komt bij teksten van vergelijkbare lengte.
+
+Tekstmodellen:
+
+Oud vs. Nieuw
+[Wat onderzoeken we?]
+
+Resultaten:
+[Wat hebben we gedaan?]
+
+[Wat was het resultaat?]
+
+[Copy paste van uitvoer?]
+
+Harry Potter vs. Sherlock Holmes
+
+We maakten een vergelijking tussen Harry Potter 1 en Harry Potter 2 van J.K. Rowling. Daarbij simuleren we dat we niet weten wie het tweede Potter-boek heeft geschreven. Het doel is natuurlijk om aan te tonen o.b.v. data dat Potter 1 en Potter 2 door dezelfde auteur zijn geschreven.
+
+Resultaten:
+Met ons model wordt Harry Potter 2 duidelijk herkend als van dezelfde auteurs als Harry Potter 1. Als tweede model hebben we The Adventures of Sherlock Holmes gebruikt van Sir Arthur Conan Doyle. Deze tekst heeft duidelijk andere eigenschappen en dat is in het model ook terug te zien.
+
+Uiteindelijk komen 11 van de 12 tests in het voordeel van Harry Potter uit de bus, met alleen de bezittelijke woorden als winst voor Holmes.
+
+[Copy paste van uitvoer?]
+
+Helpteksten van onze Class:
 
 class TextModel(builtins.object)
  |  A class supporting complex models of text.
@@ -10,12 +75,7 @@ class TextModel(builtins.object)
  |
  |  __repr__(self)
  |      Display the contents of a TextModel.
- |
- |  clean_string(self, s)
- |      method:         the method removes interpunction and set words in lower-case
- |      argument:       self, s = string
- |      return:         clean_string, as string
- |
+ |modals
  |  compare_dictionaries(self, d, nd1, nd2)
  |      method:         the method calculates the probability that the dictionary d arises from the distribution of the data in the
  |                      normalized dictionary nd1, and the same probability, but for nd2.
