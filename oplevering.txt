@@ -72,6 +72,16 @@ class TextModel(builtins.object)
  |      argument:       self
  |      return:         make_words, as dictionary {word: count}
  |
+ |  make_modals(self):
+ |        Method: Detect commonly used modals in text.
+ |        Argument: self.
+ |        Return: number of modals used in the source material (int) and a dict of the modals itself.
+ |
+ |  make_possessives(self)
+ |        Method: Detect commonly used possessives in text.
+ |        Argument: self.
+ |        Return: number of modals used in the source material (int) and a dict of the possessives itself.
+ |       
  |  normalize_dictionary(self, d)
  |      method:         the method creates from a dictionary a normalized dictionary
  |      argumnent:      self
