@@ -1,3 +1,29 @@
+********************************************************************************
+[COPY PASTE VANUIT GITHUB WAT ER IN DIT DOCUMENT MOET KOMEN, KAN WEG NA ZONDAG.]
+********************************************************************************
+
+In dit docment moet iig:
+
+    Op zijn minst twee verschillende tekstmodellen te maken. Dit noemen we de “getrainde” modellen. Je moet één of meer teksten vinden om elk model te trainen. Als je meerdere teksten hebt, kan je ze allemaal in een enkel bestand zetten om ze te verwerken. Je kan bijvoorbeeld Shakespeare en J.K. Rowling vergelijken; er zijn veel andere vergelijkingen mogelijk! Je twee (of meer) getrainde modellen moeten een behoorlijke hoeveelheid tekst hebben. (Modellen die gebaseerd zijn op te weinig brontekst zijn meestal “fragiel”, of “breekbaar”; ze zijn te veel gebaseerd op de eigenaardigheden van die ene brontekst.)
+
+    Ten minste twee andere “testteksten” kiezen die vergeleken worden met de twee getrainde modellen. Je kan hier je eigen tekst voor schrijven, of andere teksten gebruiken van dezelfde schrijver als één of beide van de getrainde modellen, of nog iets heel anders. Deze “testteksten” of “onbekende teksten” mogen korter zijn dan de teksten die je gebruikt voor de getrainde modellen.
+
+    Vergelijk je twee “testteksten” met de twee getrainde modellen (je krijgt dus vier vergelijkingen) en schrijf een kort verslagje over de resultaten, hoe je tot deze resultaten gekomen bent (inclusief hoe je hebt bepaald welk model wint als niet alle dictionary’s het daar over eens waren) en of je die resultaten verwachtte…!
+
+Extra’s zijn natuurlijk welkom, bijvoorbeeld,
+
+    Meer getrainde modellen of meer testteksten gebruiken.
+
+    Meer eigenschappen gebruiken of je eigenschappen zorgvuldig kiezen voor de teksten die je aan het onderzoeken bent.
+
+    Andere creatieve extra’s die specifiek zijn voor jouw analyse.
+
+Oplevering:
+    De oplevering, oplevering.py, moet een complete uitwerking van het project bevatten. Lever dit bestand, samen met je uitleg hierover in oplevering.txt en de tekstbestanden die je gebruikt hebt voor je analyse, in Gradescope in. In de uitleg moet je in ieder geval je zelfbedachte teksteigenschap toelichten, en de gestelde tekstanalysevragen beantwoorden.
+
+****************************************
+[HIER BEGINT DE DAADWERKELIJKE TEKST]
+****************************************
 Beschrijving van de analyse:
 Onze applicatie vergelijkt drie teksten met elkaar. Deze drie teksten bestaan uit twee bron teksten van twee verschillende auteurs. Dit zijn model1 en model2. Deze twee teksten worden vervolgens vergeleken met de derde tekst van een onbekende auteur. Op basis teksteigenschappen zoals woordlengte, woordkeuze, betrekkelijke voornaamwoorden en hulpwerkwoorden proberen we een handtekening van een auteur vast te stellen. Die handtekening houden we vervolgens tegen de onbekende tekst aan in de hoop de auteur te kunnen identificieren.
 
@@ -88,15 +114,7 @@ class TextModel(builtins.object)
  |  compare_text_with_two_models(self, model1, model2)
  |      method:         the method compares the text with two other models
  |      argument:       self
- |                      model1, an object with dictionaries
- |                      model2, an object with dictionaries
- |      return:         printed result
- |
- |  create_all_dictionaries(self)
- |      method:         the method creates all required dictionaries
- |      argument:       self
- |      return:         created dictionaries
- |
+ |                      model1, an obj****************************************
  |  make_articles(self)
  |      method:         the method creates a dictionary with articles and counts the number of equal articles
  |      argument:       self
