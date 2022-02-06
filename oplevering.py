@@ -614,4 +614,4 @@ tm_unknown.read_text_from_file(path_tekstbestanden+"Holmes.txt")
 tm_unknown.create_all_dictionaries()  # deze is hierboven gegeven
 print(tm_unknown)
 
-print(tm_unknown.compare_text_with_two_models(tm1,tm2))
+tm_unknown.compare_text_with_two_models(tm1,tm2)
