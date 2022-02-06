@@ -1,29 +1,3 @@
-********************************************************************************
-[COPY PASTE VANUIT GITHUB WAT ER IN DIT DOCUMENT MOET KOMEN, KAN WEG NA ZONDAG.]
-********************************************************************************
-
-In dit docment moet iig:
-
-    Op zijn minst twee verschillende tekstmodellen te maken. Dit noemen we de “getrainde” modellen. Je moet één of meer teksten vinden om elk model te trainen. Als je meerdere teksten hebt, kan je ze allemaal in een enkel bestand zetten om ze te verwerken. Je kan bijvoorbeeld Shakespeare en J.K. Rowling vergelijken; er zijn veel andere vergelijkingen mogelijk! Je twee (of meer) getrainde modellen moeten een behoorlijke hoeveelheid tekst hebben. (Modellen die gebaseerd zijn op te weinig brontekst zijn meestal “fragiel”, of “breekbaar”; ze zijn te veel gebaseerd op de eigenaardigheden van die ene brontekst.)
-
-    Ten minste twee andere “testteksten” kiezen die vergeleken worden met de twee getrainde modellen. Je kan hier je eigen tekst voor schrijven, of andere teksten gebruiken van dezelfde schrijver als één of beide van de getrainde modellen, of nog iets heel anders. Deze “testteksten” of “onbekende teksten” mogen korter zijn dan de teksten die je gebruikt voor de getrainde modellen.
-
-    Vergelijk je twee “testteksten” met de twee getrainde modellen (je krijgt dus vier vergelijkingen) en schrijf een kort verslagje over de resultaten, hoe je tot deze resultaten gekomen bent (inclusief hoe je hebt bepaald welk model wint als niet alle dictionary’s het daar over eens waren) en of je die resultaten verwachtte…!
-
-Extra’s zijn natuurlijk welkom, bijvoorbeeld,
-
-    Meer getrainde modellen of meer testteksten gebruiken.
-
-    Meer eigenschappen gebruiken of je eigenschappen zorgvuldig kiezen voor de teksten die je aan het onderzoeken bent.
-
-    Andere creatieve extra’s die specifiek zijn voor jouw analyse.
-
-Oplevering:
-    De oplevering, oplevering.py, moet een complete uitwerking van het project bevatten. Lever dit bestand, samen met je uitleg hierover in oplevering.txt en de tekstbestanden die je gebruikt hebt voor je analyse, in Gradescope in. In de uitleg moet je in ieder geval je zelfbedachte teksteigenschap toelichten, en de gestelde tekstanalysevragen beantwoorden.
-
-****************************************
-[HIER BEGINT DE DAADWERKELIJKE TEKST]
-****************************************
 Beschrijving van de analyse:
 Onze applicatie vergelijkt drie teksten met elkaar. Deze drie teksten bestaan uit twee bron teksten van twee verschillende auteurs. Dit zijn model1 en model2. Deze twee teksten worden vervolgens vergeleken met de derde tekst van een onbekende auteur. Op basis teksteigenschappen zoals woordlengte, woordkeuze, betrekkelijke voornaamwoorden en hulpwerkwoorden proberen we een handtekening van een auteur vast te stellen. Die handtekening houden we vervolgens tegen de onbekende tekst aan in de hoop de auteur te kunnen identificieren.
 
@@ -80,18 +54,20 @@ Model 2 (Austen) wint op 9 teksteigenschappen, waar bij Harry Potter wint op de 
 
 Vergelijkingsresultaten:
 
-                     naam       model1       model2
-                     ----       ------       ------
-                    words   -1134246.41   -1099527.59
-                    stems   -1123728.81   -1090208.32
-              punctuation    -41720.15    -32565.04
-                 articles     -8052.95     -8053.01
-                  citaten     -7725.34     -7980.47
-        relative_pronouns     -6450.45     -5515.68
-               adjectives     -2882.48     -3105.89
-                   modals     -5676.97     -5233.93
-              possessives     -9996.60     -9568.00
-               vocabulary      6035.00      7828.00
+                     naam       model1       model2 
+                     ----       ------       ------ 
+                    words   -1134246.41   -1099527.59 
+             word_lengths   -329214.15   -328178.94 
+         sentence_lengths    -39797.42    -39559.18 
+                    stems   -1123728.81   -1090208.32 
+              punctuation    -41720.15    -32565.04 
+                 articles     -8052.95     -8053.01 
+                  citaten     -7725.34     -7980.47 
+        relative_pronouns     -6450.45     -5515.68 
+               adjectives     -2882.48     -3105.89 
+                   modals     -5676.97     -5233.93 
+              possessives     -9996.60     -9568.00 
+               vocabulary      4341.00      2548.00 
 
 
 --> Model 1 wint op 3 features
@@ -111,20 +87,20 @@ Uiteindelijk komen 11 van de 12 tests in het voordeel van Harry Potter uit de bu
 
 Vergelijkingsresultaten:
 
-                     naam       model1       model2
-                     ----       ------       ------
-                    words   -849648.77   -943016.59
-             word_lengths   -257188.86   -258869.83
-         sentence_lengths    -34445.92    -34625.83
-                    stems   -839323.71   -932076.46
-              punctuation    -68125.88   -122693.92
-                 articles     -5565.21     -5564.97
-                  citaten     -9937.06    -35233.35
-        relative_pronouns     -2319.52     -2658.30
-               adjectives     -2501.67     -2573.93
-                   modals     -1984.06     -2111.72
-              possessives     -5191.99     -5991.54
-               vocabulary      6035.00     10376.00
+                     naam       model1       model2 
+                     ----       ------       ------ 
+                    words   -849648.77   -943016.59 
+             word_lengths   -257188.86   -258869.83 
+         sentence_lengths    -34445.92    -34625.83 
+                    stems   -839323.71   -932076.46 
+              punctuation    -68125.88   -122693.92 
+                 articles     -5565.21     -5564.97 
+                  citaten     -9937.06    -10071.82 
+        relative_pronouns     -2319.52     -2658.30 
+               adjectives     -2501.67     -2573.93 
+                   modals     -1984.06     -2111.72 
+              possessives     -5191.99     -5991.54 
+               vocabulary      1488.00     -2853.00 
 
 
 --> Model 1 wint op 11 features

@@ -542,6 +542,7 @@ class TextModel:
 
         ### Woordenschat ###
         halfway_point = (model1.woordenschat + model2.woordenschat) / 2
+        vocabulary_score = [self.woordenschat-model1.woordenschat, self.woordenschat - model2.woordenschat]
         if model1.woordenschat < model2.woordenschat:
             if self.woordenschat < halfway_point:
                 score_tm1 += 1
@@ -568,7 +569,7 @@ class TextModel:
         print(f"     {'adjectives':>20s}   {adjectives_score[0]:>10.2f}   {adjectives_score[1]:>10.2f} ")																											
         print(f"     {'modals':>20s}   {modals_score[0]:>10.2f}   {modals_score[1]:>10.2f} ")																											
         print(f"     {'possessives':>20s}   {possessives_score[0]:>10.2f}   {possessives_score[1]:>10.2f} ")
-        print(f"     {'vocabulary':>20s}   {tm1.woordenschat:>10.2f}   {tm2.woordenschat:>10.2f} ")																																																						
+        print(f"     {'vocabulary':>20s}   {vocabulary_score[0]:>10.2f}   {vocabulary_score[1]:>10.2f} ")																																																						
         print("\n")
         print(f"--> Model 1 wint op {score_tm1} features")
         print(f"--> Model 2 wint op {score_tm2} features")
@@ -583,8 +584,8 @@ class TextModel:
 
 ##################### Initialiseren naar persoonlijke DEV-environment #####################
 # Set path naar de locatie van tekst-bestanden
-path_tekstbestanden = """C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\"""
-# path_tekstbestanden = ""
+# path_tekstbestanden = """C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\"""
+path_tekstbestanden = ""
 ##################### Initialiseren naar persoonlijke DEV-environment #####################
 
 print(' +++++++++++ Model 1 +++++++++++ ')
@@ -599,7 +600,7 @@ tm2 = TextModel()
 #tm2.read_text_from_file(path_tekstbestanden+"train2.txt")
 # tm2.read_text_from_file(path_tekstbestanden+"Holmes.txt")
 tm2.read_text_from_file(path_tekstbestanden+"Austen_PP.txt")
-#tm2.read_text_from_file(path_tekstbestanden+"HP2.txt")
+# tm2.read_text_from_file(path_tekstbestanden+"HP2.txt")
 # tm2.read_text_from_file(path_tekstbestanden+"HP1.txt")
 tm2.create_all_dictionaries()  # deze is hierboven gegeven
 print(tm2)
