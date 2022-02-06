@@ -73,14 +73,32 @@ Belangrijk hierbij om op te merken is dat deze functie gevoelig is voor de lengt
 Tekstmodellen:
 
 Oud vs. Nieuw
-[Wat onderzoeken we?]
+We onderzochten Harry Potter 1 (model 1) met een tekst van Holmes(1892) (unknown) en een tekst van Austen (1813) (model 2). De verwachting is dat Holmes en Austen dicht bij elkaar liggen. Kortom dat model 2 gaat winnen.
 
 Resultaten:
-[Wat hebben we gedaan?]
+Model 2 (Austen) wint op 9 teksteigenschappen, waar bij Harry Potter wint op de teksteigenschappen articles, citaten en adjectives. We hadden inderdaad verwacht dat Harry Potter zou gaan scoren op citaten en adjectives.
 
-[Wat was het resultaat?]
+Vergelijkingsresultaten:
 
-[Copy paste van uitvoer?]
+                     naam       model1       model2
+                     ----       ------       ------
+                    words   -1134246.41   -1099527.59
+                    stems   -1123728.81   -1090208.32
+              punctuation    -41720.15    -32565.04
+                 articles     -8052.95     -8053.01
+                  citaten     -7725.34     -7980.47
+        relative_pronouns     -6450.45     -5515.68
+               adjectives     -2882.48     -3105.89
+                   modals     -5676.97     -5233.93
+              possessives     -9996.60     -9568.00
+               vocabulary      6035.00      7828.00
+
+
+--> Model 1 wint op 3 features
+--> Model 2 wint op 9 features
+
+
++++++ Model 2 komt beter overeen ! +++++
 
 Harry Potter vs. Sherlock Holmes
 
