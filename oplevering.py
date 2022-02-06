@@ -58,7 +58,7 @@ class TextModel:
         s += 'Citaten:\n' + str(self.quotes) + '\n\n'
         s += 'Betrekkelijk voornaamwoorden:\n' + str(self.relative_pronouns) + '\n\n'
         s += 'Bijvoeglijk naamwoorden:\n' + str(self.adjectives) + '\n\n'
-        s += 'Woordschat:\n' + str(self.woordenschat) + '\n\n'
+        s += 'Woordenschat:\n' + str(self.woordenschat) + '\n\n'
         s += 'Hulpwerkwoorden:\n' + str(self.modals) + '\n\n'
         s += 'Bezittelijkheid:\n' + str(self.possessives) + '\n\n'																				 																	 
      
