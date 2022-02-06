@@ -99,7 +99,7 @@ We maakten een vergelijking tussen Harry Potter 1 en Harry Potter 2 van J.K. Row
 Resultaten:
 Met ons model wordt Harry Potter 2 duidelijk herkend als van dezelfde auteurs als Harry Potter 1. Als tweede model hebben we The Adventures of Sherlock Holmes gebruikt van Sir Arthur Conan Doyle. Deze tekst heeft duidelijk andere eigenschappen en dat is in het model ook terug te zien.
 
-Uiteindelijk komen 11 van de 12 tests in het voordeel van Harry Potter uit de bus, met alleen de bezittelijke woorden als winst voor Holmes.
+Uiteindelijk komen 11 van de 12 tests in het voordeel van Harry Potter uit de bus, met alleen de articles als winst voor Holmes.
 
 Vergelijkingsresultaten:
 
