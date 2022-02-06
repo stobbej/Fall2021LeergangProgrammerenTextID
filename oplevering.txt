@@ -41,7 +41,7 @@ De 12 teksteigenschappen waar we op testen zijn:
 * citaten
 * betrekkelijke voornaamwoorden
 * bezittelijke voornaamwoorden
-* uitdrukkingen van toon of emotie
+* bijvoeglijk naamwoorden (met toon of emotie)
 * hulpwerkwoorden
 * woordenschat
 
@@ -54,11 +54,13 @@ Het zoeken op citaten geeft een indicatie van wat de verhouding is tussen conver
 Bij gebruik van 'a, an' is niet zeker wie of wat bedoeld wordt. Als wel duidelijk is om wie of wat het gaat wordt het bepaalde lidwoord 'the' gebruikt. ‘Daar loopt een vrouw. De vrouw draagt een beige jas. Ik vind de jas mooi.’ 
 
 [betrekkelijke voornaamwoorden]
+Een betrekkelijk voornaamwoord verbindt twee zinnen met elkaar. Bv. in 'Het woord, dat ik zoek' is 'dat' het betrekkelijk voornaamwoord.
 
 [bezittelijke voornaamwoorden]
 Bezittelijke voornaamworden (possessives) duiden aan 'van wie' een bepaald object is. In het Engels gaat het dan om een woord als "mine" of "yours". Bij deze eigenschap wordt het voorkomen van possessives en de hoeveelheid afgezet tegen de andere teksten. De tekst die het dichtste bij de verdeling van de onbekende tekst komt, wint.
 
 [uitdrukkingen van toon of emotie]
+Een bijvoeglijk naamwoord is een woord dat een eigenschap of toestand van een ander woord benoemt. Hier is getoetst op de aanwezigheid van een lijst van bijvoeglijk naamwoorden die toon of emotie uitdrukken.
 
 [hulpwerkwoorden]
 Hulpwerkwoorden (modals verbs) zijn aanvullende werkwoorden die de structuur van een zin bepalen. In dit geval (Engels) gaat het om deze woorden: can, may, must, shall, will, could, might, should en would. In het tekstmodel worden de teksten vergeleken o.b.v. de hoeveelheid waarin deze hulpwerkwoorden voor komen. De tekst die het dichtst bij komt, wint.
