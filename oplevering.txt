@@ -48,8 +48,10 @@ De 12 teksteigenschappen waar we op testen zijn:
 De zelf toegevoegde eigenschappen zijn:
 
 [citaten]
+Het zoeken op citaten geeft een indicatie van wat de verhouding is tussen conversatie en beschijvende tekst. 
 
-[lidwoorden]
+[bepaalde onbepaalde lidwoorden]
+Bij gebruik van 'a, an' is niet zeker wie of wat bedoeld wordt. Als wel duidelijk is om wie of wat het gaat wordt het bepaalde lidwoord 'the' gebruikt. ‘Daar loopt een vrouw. De vrouw draagt een beige jas. Ik vind de jas mooi.’ 
 
 [betrekkelijke voornaamwoorden]
 
@@ -101,7 +103,12 @@ class TextModel(builtins.object)
  |
  |  __repr__(self)
  |      Display the contents of a TextModel.
- |modals
+ |
+ |  clean_string(self, s)
+ |      method:         the method removes interpunction and set words in lower-case
+ |      argument:       self, s = string
+ |      return:         clean_string, as string
+ |
  |  compare_dictionaries(self, d, nd1, nd2)
  |      method:         the method calculates the probability that the dictionary d arises from the distribution of the data in the
  |                      normalized dictionary nd1, and the same probability, but for nd2.
@@ -114,21 +121,49 @@ class TextModel(builtins.object)
  |  compare_text_with_two_models(self, model1, model2)
  |      method:         the method compares the text with two other models
  |      argument:       self
- |                      model1, an obj****************************************
+ |                      model1, an object with dictionaries
+ |                      model2, an object with dictionaries
+ |      return:         printed result
+ |
+ |  create_all_dictionaries(self)
+ |      method:         the method creates all required dictionaries
+ |      argument:       self
+ |      return:         created dictionaries
+ |
+ |  make_adjectives(self)
+ |      method:         the method creates a dictionary of the use of adjectives that express tone or emotion
+ |      argument:       self
+ |      return:         self.adjectives, as dictionary {adjective: count}
+ |
  |  make_articles(self)
- |      method:         the method creates a dictionary with articles and counts the number of equal articles
+ |      method:         the method creates a dictionary with articles and counts the number of bepaald en onbepaald articles
  |      argument:       self
  |      return:         make_articles, as dictionary {arcticles: count}
  |
- |  make_colloquialism(self)
- |      method:         the method determines if a sentences is colloquialism and counts the number of sentences with colloquialism
- |      argument:       self
- |      return:         make_colloquialism, as dictionary {colloquialism}
+ |  make_modals(self)
+ |      Method: Detect commonly used modals in text.
+ |      Argument: self.
+ |      Return: number of modals used in the source material (int) and a dict of the modals itself.
+ |
+ |  make_possessives(self)
+ |      Method: Detect commonly used possessives in text.
+ |      Argument: self.
+ |      Return: number of modals used in the source material (int) and a dict of the possessives itself.
  |
  |  make_punctuation(self)
  |      method:         the method creates a dictionary with punctuation and counts the number of equal punctuation
  |      argument:       self
  |      return:         make_punctuation, as dictionary {punctuation: count }
+ |
+ |  make_quotes(self)
+ |      method:         the method determines if a sentences is quotes and counts the number of sentences with quotes
+ |      argument:       self
+ |      return:         make_quotes, as dictionary {quotes}
+ |
+ |  make_relative_pronouns(self)
+ |      method:         the method creates a dictionary of the use of relative pronouns
+ |      argument:       self
+ |      return:         self.relative_pronouns, as dictionary {pronoun: count}
  |
  |  make_sentence_lengths(self)
  |      method:         the method calculates the lenght of sentences and counts the number of sentences with equal lenght
@@ -150,16 +185,6 @@ class TextModel(builtins.object)
  |      argument:       self
  |      return:         make_words, as dictionary {word: count}
  |
- |  make_modals(self):
- |        Method: Detect commonly used modals in text.
- |        Argument: self.
- |        Return: number of modals used in the source material (int) and a dict of the modals itself.
- |
- |  make_possessives(self)
- |        Method: Detect commonly used possessives in text.
- |        Argument: self.
- |        Return: number of modals used in the source material (int) and a dict of the possessives itself.
- |       
  |  normalize_dictionary(self, d)
  |      method:         the method creates from a dictionary a normalized dictionary
  |      argumnent:      self

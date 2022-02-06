@@ -38,7 +38,7 @@ class TextModel:
         self.sentence_lengths = {}  # Om zinslengtes te tellen
         self.punctuation = {}       # Interpunctie tellen
         self.articles = {}          # Om lidwoorden te tellen
-        self.quotes = {}            # Om spreektaal vast te stellen 
+        self.quotes = {}            # Om citaten vast te stellen 
         self.relative_pronouns = {} # Om gebruik betrekkelijk voornaamwoorden vast te stellen
         self.adjectives = {}        # Om gebruik bijvoeglijk naamwoorden vast te stellen
         self.modals = {}            # Om modals te tellen -> de dict van modals met counts
@@ -55,7 +55,7 @@ class TextModel:
         s += 'Zinslengtes:\n' + str(self.sentence_lengths) + '\n\n'
         s += 'Leestekens:\n' + str(self.punctuation) + '\n\n'
         s += 'Lidwoorden:\n' + str(self.articles) + '\n\n'
-        s += 'Spreektaal:\n' + str(self.quotes) + '\n\n'
+        s += 'Citaten:\n' + str(self.quotes) + '\n\n'
         s += 'Betrekkelijk voornaamwoorden:\n' + str(self.relative_pronouns) + '\n\n'
         s += 'Bijvoeglijk naamwoorden:\n' + str(self.adjectives) + '\n\n'
         s += 'Woordschat:\n' + str(self.woordenschat) + '\n\n'
@@ -212,21 +212,23 @@ class TextModel:
     
     def make_articles(self):
         """
-        method:         the method creates a dictionary with articles and counts the number of equal articles
+        method:         the method creates a dictionary with articles and counts the number of bepaald en onbepaald articles
         argument:       self
         return:         make_articles, as dictionary {arcticles: count}
         """
         
         list_of_words = self.clean_string(self.text).split()
-        list_of_articles = ["a", "an", "the"]
-        # list_of_articles = ["de", "het", "een"]
+        list_of_bepaald_articles = ["the"]
+        list_of_onbepaald_articles = ["a", "an"]
+        
+        self.articles["bepaald"]    = 0 
+        self.articles["onbepaald"]  = 0
 
         for word in list_of_words:
-            if word in list_of_articles:
-                if word not in self.articles:
-                    self.articles[word] = 1
-                else:
-                    self.articles[word] += 1
+            if word in list_of_bepaald_articles:
+                self.articles["bepaald"]    += 1
+            if word in list_of_onbepaald_articles:
+                self.articles["onbepaald"]  += 1
         return self.articles
     
     def make_quotes(self):
@@ -417,14 +419,14 @@ class TextModel:
         epsilon = self.smallest_value(norm_dict1, norm_dict2) / 2           
             
         for k in d:
-            if d[k] != 0 and norm_dict1 != 0:                           # de testbestanden leveren een waarde 0 voor spreektaal
+            if d[k] != 0 and norm_dict1 != 0:                           # de testbestanden leveren een waarde 0 voor citaten
                 if k in norm_dict1:
                     totaal_nd1 += d[k]*log2(norm_dict1[k])
                 else:
                     totaal_nd1 += d[k]*log2(epsilon)
                 
         for k in d:
-            if d[k] != 0 and norm_dict2 != 0:                           # de testbestanden leveren een waarde 0 voor spreektaal
+            if d[k] != 0 and norm_dict2 != 0:                           # de testbestanden leveren een waarde 0 voor citaten
                 if k in norm_dict2:
                     totaal_nd2 += d[k]*log2(norm_dict2[k])
                 else:
@@ -503,7 +505,7 @@ class TextModel:
         elif articles_score[0] < articles_score[1]:
             score_tm2 += 1
      
-        ### quotes ###
+        ### Citaten ###
         quotes_score = self.compare_dictionaries(self.quotes, model1.quotes, model2.quotes)
         if quotes_score[0] > quotes_score[1]:
             score_tm1 += 1
@@ -561,7 +563,7 @@ class TextModel:
         print(f"     {'stems':>20s}   {stem_score[0]:>10.2f}   {stem_score[1]:>10.2f} ") 
         print(f"     {'punctuation':>20s}   {punc_score[0]:>10.2f}   {punc_score[1]:>10.2f} ") 
         print(f"     {'articles':>20s}   {articles_score[0]:>10.2f}   {articles_score[1]:>10.2f} ")
-        print(f"     {'quotes':>20s}   {quotes_score[0]:>10.2f}   {quotes_score[1]:>10.2f} ")
+        print(f"     {'citaten':>20s}   {quotes_score[0]:>10.2f}   {quotes_score[1]:>10.2f} ")
         print(f"     {'relative_pronouns':>20s}   {pronouns_score[0]:>10.2f}   {pronouns_score[1]:>10.2f} ")
         print(f"     {'adjectives':>20s}   {adjectives_score[0]:>10.2f}   {adjectives_score[1]:>10.2f} ")																											
         print(f"     {'modals':>20s}   {modals_score[0]:>10.2f}   {modals_score[1]:>10.2f} ")																											
@@ -581,8 +583,8 @@ class TextModel:
 
 ##################### Initialiseren naar persoonlijke DEV-environment #####################
 # Set path naar de locatie van tekst-bestanden
-#path_tekstbestanden = """C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\"""
-path_tekstbestanden = ""
+path_tekstbestanden = """C:\\Users\\jeroe\\GIT\\Fall2021LeergangProgrammerenTextID\\Tekst-bestanden\\"""
+# path_tekstbestanden = ""
 ##################### Initialiseren naar persoonlijke DEV-environment #####################
 
 print(' +++++++++++ Model 1 +++++++++++ ')
