@@ -91,7 +91,29 @@ Met ons model wordt Harry Potter 2 duidelijk herkend als van dezelfde auteurs al
 
 Uiteindelijk komen 11 van de 12 tests in het voordeel van Harry Potter uit de bus, met alleen de bezittelijke woorden als winst voor Holmes.
 
-[Copy paste van uitvoer?]
+Vergelijkingsresultaten:
+
+                     naam       model1       model2
+                     ----       ------       ------
+                    words   -849648.77   -943016.59
+             word_lengths   -257188.86   -258869.83
+         sentence_lengths    -34445.92    -34625.83
+                    stems   -839323.71   -932076.46
+              punctuation    -68125.88   -122693.92
+                 articles     -5565.21     -5564.97
+                  citaten     -9937.06    -35233.35
+        relative_pronouns     -2319.52     -2658.30
+               adjectives     -2501.67     -2573.93
+                   modals     -1984.06     -2111.72
+              possessives     -5191.99     -5991.54
+               vocabulary      6035.00     10376.00
+
+
+--> Model 1 wint op 11 features
+--> Model 2 wint op 1 features
+
+
++++++ Model 1 komt beter overeen ! +++++
 
 Helpteksten van onze Class:
 
